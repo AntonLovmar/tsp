@@ -8,7 +8,7 @@ import tsp.graph.Graph;
  * @author anton
  *
  */
-public interface Solver {
+public interface TSPSolver {
 	
 	/**
 	 * Reads input from stdin. The input must be of the following format:
