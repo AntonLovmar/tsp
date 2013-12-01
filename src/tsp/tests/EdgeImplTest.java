@@ -69,4 +69,30 @@ public class EdgeImplTest {
 		Edge edge = new EdgeImpl(vertex1, vertex2);
 		assertFalse(edge.updateEdge(vertex3, vertex3));
 	}
+	
+	@Test
+	public void twoEqualsEdges() {
+		Vertex vertex1 = Mockito.mock(Vertex.class);
+		Mockito.when(vertex1.getId()).thenReturn(1);
+		Vertex vertex2 = Mockito.mock(Vertex.class);
+		Mockito.when(vertex2.getId()).thenReturn(2);
+		
+		Edge edge = new EdgeImpl(vertex1, vertex2);
+		Edge edge2 = new EdgeImpl(vertex2, vertex1);
+		assertEquals(edge, edge2);
+	} 
+	
+	@Test
+	public void twoNonEqualEdges() {
+		Vertex vertex1 = Mockito.mock(Vertex.class);
+		Mockito.when(vertex1.getId()).thenReturn(1);
+		Vertex vertex2 = Mockito.mock(Vertex.class);
+		Mockito.when(vertex2.getId()).thenReturn(2);
+		Vertex vertex3 = Mockito.mock(Vertex.class);
+		Mockito.when(vertex2.getId()).thenReturn(3);
+		
+		Edge edge = new EdgeImpl(vertex1, vertex2);
+		Edge edge2 = new EdgeImpl(vertex1, vertex3);
+		assertFalse(edge.equals(edge2));
+	}
 }

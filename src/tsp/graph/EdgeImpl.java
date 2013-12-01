@@ -34,5 +34,14 @@ public class EdgeImpl implements Edge {
 		}
 		return false;
 	}
+	
+	@Override
+	public boolean equals(Object other) {
+		Edge otherEdge = (Edge) other;
+		if(vertices.contains(otherEdge.getVertices().get(0)) && vertices.contains(otherEdge.getVertices().get(1))) {
+			return true;
+		} 
+		return false;
+	}
 
 }
