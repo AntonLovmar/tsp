@@ -3,21 +3,23 @@ package tsp.graph;
 import java.util.List;
 
 public class TSPGraph implements Graph {
-
+	
+	private List<Vertex> vertices;
+	private List<Edge> edges;
+	
 	public TSPGraph(List<Vertex> vertices, List<Edge> edges) {
-		
+		this.vertices = vertices;
+		this.edges = edges;
 	}
 	
 	@Override
 	public List<Edge> getEdges() {
-		// TODO Auto-generated method stub
-		return null;
+		return edges;
 	}
 
 	@Override
 	public List<Vertex> getVertices() {
-		// TODO Auto-generated method stub
-		return null;
+		return vertices;
 	}
 
 	@Override
