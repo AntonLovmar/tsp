@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import tsp.graph.Graph;
-import tsp.parser.InputReader;
+import tsp.reader.InputReader;
 
 public class InputReaderTest {
 
