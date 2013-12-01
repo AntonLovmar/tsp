@@ -26,8 +26,10 @@ public class VertexImpl implements Vertex {
 		return y;
 	}
 	
-	public boolean equals(VertexImpl other) {
-		if(this.getId() == other.getId()) {
+	@Override
+	public boolean equals(Object other) {
+		Vertex otherVertex = (Vertex) other;
+		if(this.getId() == otherVertex.getId()) {
 			return true; 
 		} else {
 			return false;
