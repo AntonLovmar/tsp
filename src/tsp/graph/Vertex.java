@@ -19,13 +19,13 @@ public interface Vertex {
 	 * 
 	 * @return a double representing the vertex's x-coordinate
 	 */
-	public double getXCoordinate();
+	public double getX();
 	
 	/**
 	 * Returns the y-coordinate of the vertex.
 	 * 
 	 * @return a double representing the vertex's y-coordinate
 	 */
-	public double getYCoordinate();
+	public double getY();
 
 }

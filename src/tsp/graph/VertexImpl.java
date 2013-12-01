@@ -3,7 +3,7 @@ package tsp.graph;
 public class VertexImpl implements Vertex {
 	
 	
-	public VertexImpl(int id, int x, int y) {
+	public VertexImpl(int id, double x, double y) {
 		
 	}
 
@@ -14,13 +14,13 @@ public class VertexImpl implements Vertex {
 	}
 
 	@Override
-	public double getXCoordinate() {
+	public double getX() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public double getYCoordinate() {
+	public double getY() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
