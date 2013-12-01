@@ -2,27 +2,28 @@ package tsp.graph;
 
 public class VertexImpl implements Vertex {
 	
+	private double x,y;
+	private int id;
 	
 	public VertexImpl(int id, double x, double y) {
-		
+		this.x = x;
+		this.y = y;
+		this.id = id;
 	}
 
 	@Override
 	public int getId() {
-		// TODO Auto-generated method stub
-		return 0;
+		return id;
 	}
 
 	@Override
 	public double getX() {
-		// TODO Auto-generated method stub
-		return 0;
+		return x;
 	}
 
 	@Override
 	public double getY() {
-		// TODO Auto-generated method stub
-		return 0;
+		return y;
 	}
 	
 	public boolean equals(VertexImpl other) {
