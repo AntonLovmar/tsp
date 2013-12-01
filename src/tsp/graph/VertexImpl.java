@@ -24,5 +24,13 @@ public class VertexImpl implements Vertex {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	public boolean equals(VertexImpl other) {
+		if(this.getId() == other.getId()) {
+			return true; 
+		} else {
+			return false;
+		}
+	}
 
 }
