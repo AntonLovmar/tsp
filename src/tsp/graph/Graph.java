@@ -22,7 +22,7 @@ public interface Graph {
 	 * Get all edges connected to a certain vertex.
 	 * 
 	 * @param vertex A vertex for which all connected edges will be retrieved
-	 * @return All edges connected to the vertex
+	 * @return All edges connected to the vertex. Null if not edges are connected
 	 */
 	public List<Edge> getEdgesForVertex(Vertex vertex);
 	

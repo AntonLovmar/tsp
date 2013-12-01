@@ -1,5 +1,6 @@
 package tsp.graph;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TSPGraph implements Graph {
@@ -24,8 +25,17 @@ public class TSPGraph implements Graph {
 
 	@Override
 	public List<Edge> getEdgesForVertex(Vertex vertex) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Edge> edgesForVertex = new ArrayList<Edge>();
+		if(!vertices.contains(vertex)) {
+			return null;
+		} else {
+			for(Edge edge : getEdges()) {
+				if(edge.getVertices().contains(vertex)) {
+					edgesForVertex.add(edge);
+				}
+			}
+		}
+		return edgesForVertex;
 	}
 
 }
