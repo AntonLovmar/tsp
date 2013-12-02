@@ -1,4 +1,4 @@
-package tsp.tests;
+package reader;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,7 +17,7 @@ public class GraphReaderTest {
 	public void numberOfVerticesCorrect() {
 		FileReader fileReader;
 		try {
-			fileReader = new FileReader(new File("/home/anton/Github/tsp/tests/parsetest.txt"));
+			fileReader = new FileReader(new File("lib/parsetest.txt"));
 			GraphReader reader = new GraphReader(fileReader);
 			Graph graph = reader.readGraph();
 			assertEquals(3, graph.getVertices().size());
@@ -25,12 +25,12 @@ public class GraphReaderTest {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	public void numberOfEdgesCorrect() {
 		FileReader fileReader;
 		try {
-			fileReader = new FileReader(new File("/home/anton/Github/tsp/tests/parsetest.txt"));
+			fileReader = new FileReader(new File("lib/parsetest.txt"));
 			GraphReader reader = new GraphReader(fileReader);
 			Graph graph = reader.readGraph();
 			assertEquals(3, graph.getEdges().size());

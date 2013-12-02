@@ -1,6 +1,6 @@
-package tsp.tests;
-
-import static org.junit.Assert.*;
+package graph;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
@@ -15,21 +15,21 @@ public class VertexImplTest {
 		Vertex vertex2 = new VertexImpl(1, 1.14, 2.25);
 		assertEquals(vertex1, vertex2);
 	}
-	
+
 	@Test
 	public void equalsWithNonEqualX() {
 		Vertex vertex1 = new VertexImpl(1, 1.14, 2.25);
 		Vertex vertex2 = new VertexImpl(1, 1.24, 2.25);
 		assertFalse(vertex1.equals(vertex2));
 	}
-	
+
 	@Test
 	public void equalsWithNonEqualY() {
 		Vertex vertex1 = new VertexImpl(1, 1.14, 2.25);
 		Vertex vertex2 = new VertexImpl(1, 1.14, 2.35);
 		assertFalse(vertex1.equals(vertex2));
 	}
-	
+
 	@Test
 	public void equalsWithNonEqualId() {
 		Vertex vertex1 = new VertexImpl(1, 1.14, 2.25);

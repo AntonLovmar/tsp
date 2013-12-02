@@ -1,6 +1,6 @@
-package tsp.tests;
-
-import static org.junit.Assert.*;
+package graph;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +23,11 @@ public class TSPGraphTest {
 		Mockito.when(vertex2.getId()).thenReturn(2);
 		Vertex vertex3 = Mockito.mock(Vertex.class);
 		Mockito.when(vertex1.getId()).thenReturn(3);
-		
+
 		Edge edge1 = mockedEdge(vertex1, vertex2);
 		Edge edge2 = mockedEdge(vertex1, vertex3);
 		Edge edge3 = mockedEdge(vertex2, vertex3);
-		
+
 		List<Vertex> vertices = new ArrayList<Vertex>();
 		vertices.add(vertex1);
 		vertices.add(vertex2);
@@ -39,7 +39,7 @@ public class TSPGraphTest {
 		Graph graph = new TSPGraph(vertices, edges);
 		assertEquals(2, graph.getEdgesForVertex(vertex1).size());
 	}
-	
+
 	@Test
 	public void getEdgeFromNonExistingVertex() {
 		Vertex vertex1 = Mockito.mock(Vertex.class);
@@ -50,11 +50,11 @@ public class TSPGraphTest {
 		Mockito.when(vertex1.getId()).thenReturn(3);
 		Vertex vertex4 = Mockito.mock(Vertex.class);
 		Mockito.when(vertex1.getId()).thenReturn(4);
-		
+
 		Edge edge1 = mockedEdge(vertex1, vertex2);
 		Edge edge2 = mockedEdge(vertex1, vertex3);
 		Edge edge3 = mockedEdge(vertex2, vertex3);
-		
+
 		List<Vertex> vertices = new ArrayList<Vertex>();
 		vertices.add(vertex1);
 		vertices.add(vertex2);
@@ -66,14 +66,14 @@ public class TSPGraphTest {
 		Graph graph = new TSPGraph(vertices, edges);
 		assertNull(graph.getEdgesForVertex(vertex4));
 	}
-	
+
 	private Edge mockedEdge(Vertex vertex1, Vertex vertex2) {
 		List<Vertex> vertices = new ArrayList<Vertex>();
 		vertices.add(vertex1);
 		vertices.add(vertex2);
 		Edge edge = Mockito.mock(Edge.class);
 
-		Mockito.when(edge.getVertices()).thenReturn(vertices);	
+		Mockito.when(edge.getVertices()).thenReturn(vertices);
 		return edge;
 	}
 }
