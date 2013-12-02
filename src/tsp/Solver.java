@@ -1,4 +1,4 @@
-package tsp.solver;
+package tsp;
 
 import tsp.graph.Graph;
 import tsp.graph.Path;
@@ -6,7 +6,7 @@ import tsp.pathfinding.NaiveStrategy;
 import tsp.pathfinding.PathfindingStrategy;
 import tsp.reader.GraphReader;
 
-public class Solver implements TSPSolver {
+public class Solver {
 
 	public static void main(String[] args) {
 		Solver solver = new Solver();
@@ -16,7 +16,7 @@ public class Solver implements TSPSolver {
 		Path path = solver.solveWithStrategy(strategy, graph);
 		System.out.println(path);
 	}
-	@Override
+
 	public Path solveWithStrategy(PathfindingStrategy strategy, Graph graph) {
 		return strategy.findPath(graph);
 	}
