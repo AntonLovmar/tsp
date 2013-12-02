@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PathImpl implements Path {
-	
+
 	private List<Vertex> path;
-	
+
 	public PathImpl() {
 		path = new ArrayList<Vertex>();
 	}
@@ -50,10 +50,10 @@ public class PathImpl implements Path {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		for(Vertex vertex : path) {
+		for (Vertex vertex : path) {
 			sb.append(vertex.getId());
 			sb.append("\n");
 		}
-		return sb.toString();	
+		return sb.toString();
 	}
 }
