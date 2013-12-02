@@ -1,5 +1,8 @@
 package tsp.pathfinding;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import tsp.graph.Graph;
 import tsp.graph.Path;
 import tsp.graph.PathImpl;
@@ -9,23 +12,31 @@ public class NaiveStrategy implements PathfindingStrategy {
 
 	@Override
 	public Path findPath(Graph graph) {
-		Path path = new PathImpl();
 		int numberOfVertices = graph.getNumberOfVertices();
-		boolean[] used = new boolean[numberOfVertices];
-		Vertex best = null;
-		for (int i = 0; i < numberOfVertices; i++) {
-			best = null;
+		Path path = new PathImpl(numberOfVertices);
+		Set<Vertex> used = new HashSet<>();
+		Vertex bestNeighbour = null, currNeighbour = null;
+
+		Vertex currPathVertex = graph.getVertex(0);
+		used.add(currPathVertex);
+		path.addToPath(currPathVertex);
+
+		for (int i = 1; i < numberOfVertices; i++) {
+			currPathVertex = path.getVertex(i - 1);
+			bestNeighbour = null;
 			for (int j = 0; j < numberOfVertices; j++) {
-				if (!used[j]
-						&& (best == null || graph.distanceBetween(path.getVertex(i - 1), graph.getVertex(j)) < graph
-								.distanceBetween(path.getVertex(i - 1), graph.getVertex(j)))) {
-					best = graph.getVertex(j);
+				currNeighbour = graph.getVertex(j);
+				if (used.contains(currNeighbour) || currNeighbour.equals(currPathVertex))
+					continue;
+				if (bestNeighbour == null
+						|| graph.distanceBetween(currPathVertex, currNeighbour) < graph.distanceBetween(currPathVertex,
+								bestNeighbour)) {
+					bestNeighbour = currNeighbour;
 				}
-				path.replaceVertex(i, best);
-				used[best.getId()] = true;
 			}
+			path.addToPath(bestNeighbour);
+			used.add(bestNeighbour);
 		}
 		return path;
 	}
-
 }

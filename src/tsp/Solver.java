@@ -14,6 +14,7 @@ public class Solver {
 		Graph graph = reader.readGraph();
 		PathfindingStrategy strategy = new NaiveStrategy();
 		Path path = solver.solveWithStrategy(strategy, graph);
+		System.out.println("length: " + graph.totalLength(path.getPath()));
 		System.out.println(path);
 	}
 
