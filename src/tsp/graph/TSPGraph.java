@@ -1,25 +1,16 @@
 package tsp.graph;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class TSPGraph implements Graph {
 
 	private final List<Vertex> vertices;
-	private final Set<Edge> edges;
-	private final Edge[][] adjacencyMatrix;
+	private final int[][] adjacencyMatrix;
 
-	public TSPGraph(List<Vertex> vertices, Set<Edge> edges) {
+	public TSPGraph(List<Vertex> vertices) {
 		this.vertices = vertices;
-		this.edges = edges;
-		adjacencyMatrix = new Edge[vertices.size() + 1][vertices.size() + 1];
-		for (Edge edge : edges) {
-			int vertex1Id = edge.getVertices().get(0).getId();
-			int vertex2Id = edge.getVertices().get(1).getId();
-			adjacencyMatrix[vertex1Id][vertex2Id] = edge;
-			adjacencyMatrix[vertex2Id][vertex1Id] = edge;
-		}
+		adjacencyMatrix = new int[vertices.size() + 1][vertices.size() + 1];
+		buildEdges();
 	}
 
 	@Override
@@ -28,32 +19,13 @@ public class TSPGraph implements Graph {
 	}
 
 	@Override
-	public List<Edge> getEdgesForVertex(Vertex vertex) {
-		List<Edge> edgesForVertex = new ArrayList<Edge>();
-		if (!vertices.contains(vertex)) {
-			return null;
-		} else {
-			for (int i = 1; i < adjacencyMatrix.length; i++) {
-				if (adjacencyMatrix[vertex.getId()][i] != null)
-					edgesForVertex.add(adjacencyMatrix[vertex.getId()][i]);
-			}
-		}
-		return edgesForVertex;
-	}
-
-	@Override
 	public int getNumberOfVertices() {
 		return vertices.size();
 	}
 
 	@Override
-	public int getNumberOfEdges() {
-		return edges.size();
-	}
-
-	@Override
 	public int distanceBetween(Vertex vertex1, Vertex vertex2) {
-		return adjacencyMatrix[vertex1.getId()][vertex2.getId()].length();
+		return adjacencyMatrix[vertex1.getId()][vertex2.getId()];
 	}
 
 	@Override
@@ -71,4 +43,13 @@ public class TSPGraph implements Graph {
 		return vertices.get(index);
 	}
 
+	private void buildEdges() {
+		for (Vertex vertex : vertices) {
+			for (Vertex otherVertex : vertices) {
+				int length = (int) Math.round(Math.sqrt(Math.pow(vertex.getX() - otherVertex.getX(), 2)
+						+ Math.pow(vertex.getY() - otherVertex.getY(), 2)));
+				adjacencyMatrix[vertex.getId()][otherVertex.getId()] = length;
+			}
+		}
+	}
 }

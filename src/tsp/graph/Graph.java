@@ -19,13 +19,6 @@ public interface Graph {
 	public int getNumberOfVertices();
 
 	/**
-	 * Returns the number of edges in the graph.
-	 * 
-	 * @return the number of edges
-	 */
-	public int getNumberOfEdges();
-
-	/**
 	 * Get the distance between two vertices.
 	 * 
 	 * @param vertex1
@@ -35,16 +28,6 @@ public interface Graph {
 	 * @return the distance between the vertices.
 	 */
 	public int distanceBetween(Vertex vertex1, Vertex vertex2);
-
-	/**
-	 * Get all edges connected to a certain vertex.
-	 * 
-	 * @param vertex
-	 *            A vertex for which all connected edges will be retrieved
-	 * @return All edges connected to the vertex. Null if not edges are
-	 *         connected
-	 */
-	public List<Edge> getEdgesForVertex(Vertex vertex);
 
 	/**
 	 * Returns the vertex at a certain index
