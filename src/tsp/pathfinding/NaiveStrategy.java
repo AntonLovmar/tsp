@@ -26,7 +26,7 @@ public class NaiveStrategy implements PathfindingStrategy {
 			bestNeighbour = null;
 			for (int j = 0; j < numberOfVertices; j++) {
 				currNeighbour = graph.getVertex(j);
-				if (used.contains(currNeighbour) || currNeighbour.equals(currPathVertex))
+				if (used.contains(currNeighbour))
 					continue;
 				if (bestNeighbour == null
 						|| graph.distanceBetween(currPathVertex, currNeighbour) < graph.distanceBetween(currPathVertex,
