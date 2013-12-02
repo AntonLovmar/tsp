@@ -46,8 +46,9 @@ public class TSPGraph implements Graph {
 	private void buildEdges() {
 		for (Vertex vertex : vertices) {
 			for (Vertex otherVertex : vertices) {
-				int length = (int) Math.round(Math.sqrt(Math.pow(vertex.getX() - otherVertex.getX(), 2)
-						+ Math.pow(vertex.getY() - otherVertex.getY(), 2)));
+				double first = vertex.getX() - otherVertex.getX();
+				double second = vertex.getY() - otherVertex.getY();
+				int length = (int) (Math.sqrt((first * first) + (second * second)) + 0.5);
 				adjacencyMatrix[vertex.getId()][otherVertex.getId()] = length;
 			}
 		}
