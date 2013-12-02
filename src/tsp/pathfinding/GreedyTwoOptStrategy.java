@@ -12,7 +12,25 @@ public class GreedyTwoOptStrategy implements PathfindingStrategy {
 
 	@Override
 	public Path findPath(Graph graph, long deadline) {
-		return twoOpt(greedyStartPath(graph, deadline));
+		return twoOpt(graph, greedyStartPath(graph, deadline));
+	}
+
+	private Path twoOpt(Graph graph, Path path) {
+		for (int i = 0; i < graph.getNumberOfVertices(); i++) {
+			Vertex node1 = graph.getVertex(i);
+			for (int j = 0; j < graph.getNumberOfVertices(); j++) {
+				if (i == j)
+					continue;
+				Vertex node2 = graph.getVertex(j);
+				for (int k = 0; k < graph.getNumberOfVertices(); k++) {
+					if (k == j)
+						continue;
+					Vertex node3 = graph.getVertex(k);
+
+				}
+			}
+		}
+		return null;
 	}
 
 	private Path greedyStartPath(Graph graph, long deadline) {
@@ -42,5 +60,6 @@ public class GreedyTwoOptStrategy implements PathfindingStrategy {
 			used.add(bestNeighbour);
 		}
 		return path;
+	}
 
 }
