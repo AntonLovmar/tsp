@@ -8,11 +8,11 @@ import tsp.graph.Path;
 import tsp.graph.PathImpl;
 import tsp.graph.Vertex;
 
-public class NaiveStrategy implements PathfindingStrategy {
+public class GreedyTwoOptStrategy implements PathfindingStrategy {
 
 	@Override
 	public Path findPath(Graph graph, long deadline) {
-		return greedyStartPath(graph, deadline);
+		return twoOpt(greedyStartPath(graph, deadline));
 	}
 
 	private Path greedyStartPath(Graph graph, long deadline) {
@@ -42,5 +42,5 @@ public class NaiveStrategy implements PathfindingStrategy {
 			used.add(bestNeighbour);
 		}
 		return path;
-	}
+
 }
