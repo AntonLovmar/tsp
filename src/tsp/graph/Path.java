@@ -13,6 +13,20 @@ public interface Path {
 	 */
 	public List<Vertex> getPath();
 	
+	/**
+	 * Retrieve the vertex at a certain index. 
+	 * 
+	 * @param index The index of the vertex
+	 * @return the vertex at index <code>index</code>
+	 */
+	public Vertex getVertex(int index);
+	
+	/**
+	 * Returns the first vertex in the path.
+	 * 
+	 * @return The first vertex in the path.
+	 */
+	public Vertex getFirst();
 	
 	/**
 	 * Adds a vertex to the end of the path.
@@ -22,13 +36,21 @@ public interface Path {
 	public void addToPath(Vertex vertex);
 	
 	/**
+	 * Replaces the vertex in the path at a certain index
+	 * with a new vertex.
 	 * 
-	 * 
-	 * @param oldVertex
-	 * @param newVertex
-	 * @return
+	 * @param index The index of the vertex to be replaced
+	 * @param newVertex The new vertex
 	 */
-	public boolean replaceVertex(Vertex oldVertex, Vertex newVertex);
+	public void replaceVertex(int index, Vertex newVertex);
+	
+	/**
+	 * Swaps places of two vertices at the indices. 
+	 * 
+	 * @param firstIndex The index of the first vertex
+	 * @param secondIndex The index of the second vertex
+	 */
+	public void swapVerticesAt(int firstIndex, int secondIndex); 
 	
 	/**
 	 * Returns the path as a string. The path string 
