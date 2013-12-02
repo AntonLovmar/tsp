@@ -28,6 +28,8 @@ public class VertexImpl implements Vertex {
 
 	@Override
 	public boolean equals(Object other) {
+		if (!(other instanceof Vertex))
+			return false;
 		Vertex otherVertex = (Vertex) other;
 		if (this.getId() == otherVertex.getId() && this.getX() == otherVertex.getX()
 				&& this.getY() == otherVertex.getY()) {
@@ -36,5 +38,4 @@ public class VertexImpl implements Vertex {
 			return false;
 		}
 	}
-
 }
