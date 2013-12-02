@@ -47,4 +47,13 @@ public class PathImpl implements Path {
 		return path.get(0);
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for(Vertex vertex : path) {
+			sb.append(vertex.getId());
+			sb.append("\n");
+		}
+		return sb.toString();	
+	}
 }
