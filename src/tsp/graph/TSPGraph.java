@@ -4,15 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TSPGraph implements Graph {
-	
+
 	private List<Vertex> vertices;
 	private List<Edge> edges;
-	
+	private Edge[][] adjacencyMatrix;
+
 	public TSPGraph(List<Vertex> vertices, List<Edge> edges) {
 		this.vertices = vertices;
 		this.edges = edges;
+		adjacencyMatrix = new Edge[vertices.size() + 1][vertices.size() + 1];
+		for (Edge edge : edges) {
+			int vertex1Id = edge.getVertices().get(0).getId();
+			int vertex2Id = edge.getVertices().get(1).getId();
+			adjacencyMatrix[vertex1Id][vertex2Id] = edge;
+			adjacencyMatrix[vertex2Id][vertex1Id] = edge;
+		}
 	}
-	
+
 	@Override
 	public List<Edge> getEdges() {
 		return edges;
@@ -26,13 +34,12 @@ public class TSPGraph implements Graph {
 	@Override
 	public List<Edge> getEdgesForVertex(Vertex vertex) {
 		List<Edge> edgesForVertex = new ArrayList<Edge>();
-		if(!vertices.contains(vertex)) {
+		if (!vertices.contains(vertex)) {
 			return null;
 		} else {
-			for(Edge edge : getEdges()) {
-				if(edge.getVertices().contains(vertex)) {
-					edgesForVertex.add(edge);
-				}
+			for (int i = 1; i < adjacencyMatrix.length; i++) {
+				if (adjacencyMatrix[vertex.getId()][i] != null)
+					edgesForVertex.add(adjacencyMatrix[vertex.getId()][i]);
 			}
 		}
 		return edgesForVertex;
@@ -50,13 +57,7 @@ public class TSPGraph implements Graph {
 
 	@Override
 	public int distanceBetween(Vertex vertex1, Vertex vertex2) {
-		List<Edge> edges = getEdgesForVertex(vertex1);
-		for(Edge edge : edges) {
-			if(edge.getVertices().contains(vertex2)) {
-				return edge.length();
-			}
-		}
-		return 0;
+		return adjacencyMatrix[vertex1.getId()][vertex2.getId()].length();
 	}
 
 	@Override
