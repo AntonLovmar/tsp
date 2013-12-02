@@ -7,8 +7,8 @@ public class PathImpl implements Path {
 
 	private final List<Vertex> path;
 
-	public PathImpl() {
-		path = new ArrayList<Vertex>();
+	public PathImpl(int length) {
+		path = new ArrayList<>(length);
 	}
 
 	@Override
@@ -39,12 +39,14 @@ public class PathImpl implements Path {
 
 	@Override
 	public Vertex getVertex(int index) {
+		if (index >= path.size())
+			return null;
 		return path.get(index);
 	}
 
 	@Override
 	public Vertex getFirst() {
-		return path.get(0);
+		return getVertex(0);
 	}
 
 	@Override

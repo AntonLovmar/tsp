@@ -1,17 +1,14 @@
 package tsp.graph;
+
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import tsp.graph.Path;
-import tsp.graph.PathImpl;
-import tsp.graph.Vertex;
-
 public class PathImplTest {
 
 	@Test
-	public void replaceVertex() {
+	public void testReplaceVertex() {
 		Vertex vertex = Mockito.mock(Vertex.class);
 		Mockito.when(vertex.getId()).thenReturn(1);
 		Vertex vertex2 = Mockito.mock(Vertex.class);
@@ -21,7 +18,7 @@ public class PathImplTest {
 		Vertex vertex4 = Mockito.mock(Vertex.class);
 		Mockito.when(vertex4.getId()).thenReturn(4);
 
-		Path path = new PathImpl();
+		Path path = new PathImpl(4);
 		path.addToPath(vertex);
 		path.addToPath(vertex2);
 		path.addToPath(vertex3);
@@ -41,7 +38,7 @@ public class PathImplTest {
 		Vertex vertex4 = Mockito.mock(Vertex.class);
 		Mockito.when(vertex4.getId()).thenReturn(4);
 
-		Path path = new PathImpl();
+		Path path = new PathImpl(4);
 		path.addToPath(vertex);
 		path.addToPath(vertex2);
 		path.addToPath(vertex3);
