@@ -60,11 +60,13 @@ public class TSPGraph implements Graph {
 		return adjacencyMatrix[vertex1.getId()][vertex2.getId()].length();
 	}
 
+	@Override
 	public int totalLength(List<Vertex> path) {
 		int sum = 0;
 		for (int i = 1; i < path.size(); i++) {
 			sum += distanceBetween(path.get(i - 1), path.get(i));
 		}
+		sum += distanceBetween(path.get(path.size() - 1), path.get(0));
 		return sum;
 	}
 

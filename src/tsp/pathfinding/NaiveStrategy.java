@@ -11,7 +11,11 @@ import tsp.graph.Vertex;
 public class NaiveStrategy implements PathfindingStrategy {
 
 	@Override
-	public Path findPath(Graph graph) {
+	public Path findPath(Graph graph, long deadline) {
+		return greedyStartPath(graph, deadline);
+	}
+
+	private Path greedyStartPath(Graph graph, long deadline) {
 		int numberOfVertices = graph.getNumberOfVertices();
 		Path path = new PathImpl(numberOfVertices);
 		Set<Vertex> used = new HashSet<>();
@@ -26,7 +30,7 @@ public class NaiveStrategy implements PathfindingStrategy {
 			bestNeighbour = null;
 			for (int j = 0; j < numberOfVertices; j++) {
 				currNeighbour = graph.getVertex(j);
-				if (used.contains(currNeighbour) || currNeighbour.equals(currPathVertex))
+				if (used.contains(currNeighbour))
 					continue;
 				if (bestNeighbour == null
 						|| graph.distanceBetween(currPathVertex, currNeighbour) < graph.distanceBetween(currPathVertex,
