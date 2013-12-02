@@ -36,6 +36,15 @@ public class EdgeImpl implements Edge {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + length;
+		result = prime * result + ((vertices == null) ? 0 : vertices.hashCode());
+		return result;
+	}
+
+	@Override
 	public boolean equals(Object other) {
 		Edge otherEdge = (Edge) other;
 		if (vertices.contains(otherEdge.getVertices().get(0)) && vertices.contains(otherEdge.getVertices().get(1))) {
