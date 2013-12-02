@@ -2,8 +2,8 @@ package tsp.graph;
 
 public class VertexImpl implements Vertex {
 
-	private double x, y;
-	private int id;
+	private final double x, y;
+	private final int id;
 
 	public VertexImpl(int id, double x, double y) {
 		this.x = x;

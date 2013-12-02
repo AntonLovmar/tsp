@@ -14,23 +14,23 @@ import tsp.graph.TSPGraph;
 import tsp.graph.Vertex;
 import tsp.graph.VertexImpl;
 
-public class GraphReader {
-	private BufferedReader reader;
-	
+class GraphReader {
+	private final BufferedReader reader;
+
 	public GraphReader(FileReader fileReader) {
 		reader = new BufferedReader(fileReader);
 	}
-	
+
 	public GraphReader() {
 		reader = new BufferedReader(new InputStreamReader(System.in));
 	}
-	
+
 	public Graph readGraph() {
 		List<Vertex> vertices = new ArrayList<Vertex>();
 		try {
 			String line = reader.readLine();
 			int numberOfVertices = Integer.parseInt(line);
-			for(int i = 0; i < numberOfVertices; i++) {
+			for (int i = 0; i < numberOfVertices; i++) {
 				line = reader.readLine();
 				String[] xAndY = line.split(" ");
 				double x = Double.parseDouble(xAndY[0]);
@@ -44,14 +44,14 @@ public class GraphReader {
 		Graph graph = new TSPGraph(vertices, edges);
 		return graph;
 	}
-	
+
 	private List<Edge> buildEdges(List<Vertex> vertices) {
 		List<Edge> edges = new ArrayList<Edge>();
-		for(Vertex vertex : vertices) {
-			for(Vertex otherVertex : vertices) {
-				if(vertex != otherVertex) {
+		for (Vertex vertex : vertices) {
+			for (Vertex otherVertex : vertices) {
+				if (vertex != otherVertex) {
 					Edge edge = new EdgeImpl(vertex, otherVertex);
-					if(!edges.contains(edge)) {
+					if (!edges.contains(edge)) {
 						edges.add(edge);
 					}
 				}

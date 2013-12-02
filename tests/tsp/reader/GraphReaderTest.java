@@ -1,4 +1,4 @@
-package reader;
+package tsp.reader;
 
 import static org.junit.Assert.assertEquals;
 

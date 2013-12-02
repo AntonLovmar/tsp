@@ -3,10 +3,10 @@ package tsp.graph;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PathImpl implements Path {
-	
-	private List<Vertex> path;
-	
+class PathImpl implements Path {
+
+	private final List<Vertex> path;
+
 	public PathImpl() {
 		path = new ArrayList<Vertex>();
 	}

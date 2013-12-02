@@ -5,8 +5,8 @@ import java.util.List;
 
 public class EdgeImpl implements Edge {
 
-	private List<Vertex> vertices;
-	private int length;
+	private final List<Vertex> vertices;
+	private final int length;
 
 	public EdgeImpl(Vertex vertex1, Vertex vertex2) {
 		vertices = new ArrayList<Vertex>();
@@ -34,13 +34,13 @@ public class EdgeImpl implements Edge {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean equals(Object other) {
 		Edge otherEdge = (Edge) other;
-		if(vertices.contains(otherEdge.getVertices().get(0)) && vertices.contains(otherEdge.getVertices().get(1))) {
+		if (vertices.contains(otherEdge.getVertices().get(0)) && vertices.contains(otherEdge.getVertices().get(1))) {
 			return true;
-		} 
+		}
 		return false;
 	}
 

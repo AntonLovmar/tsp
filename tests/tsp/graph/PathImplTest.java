@@ -1,4 +1,4 @@
-package graph;
+package tsp.graph;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
