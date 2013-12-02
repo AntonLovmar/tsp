@@ -1,6 +1,8 @@
 package tsp.solver;
 
 import tsp.graph.Graph;
+import tsp.graph.Path;
+import tsp.pathfinding.PathfindingStrategy;
 
 /**
  * The solver is to read input from stdin for the TSP problem, and solve the problem for the given input.
@@ -11,13 +13,11 @@ import tsp.graph.Graph;
 public interface TSPSolver {
 	
 	/**
-	 * Reads input from stdin. The input must be of the following format:
-	 * The first line of standard input contains an integer 1 ≤ N ≤ 1000, the number of points. 
-	 * The following N lines each contain a pair of real numbers x y giving the coordinates of the N points. 
-	 * All numbers in the input have absolute value bounded by 106.
 	 * 
+	 * @param strategy
+	 * @return
 	 */
-	public Graph readInput();
+	public Path solveWithStrategy(PathfindingStrategy strategy, Graph graph);
 	
 	
 }

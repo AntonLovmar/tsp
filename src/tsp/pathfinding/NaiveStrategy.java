@@ -2,18 +2,30 @@ package tsp.pathfinding;
 
 import tsp.graph.Graph;
 import tsp.graph.Path;
+import tsp.graph.PathImpl;
+import tsp.graph.Vertex;
 
-class NaiveStrategy implements PathfindingStrategy {
+public class NaiveStrategy implements PathfindingStrategy {
 
-	/*
-	 * GreedyTour tour[0] = 0 used[0] = true for i = 1 to n-1 best = -1 for j =
-	 * 0 to n-1 if not used[j] and (best = -1 or dist(tour[i-1],j) <
-	 * dist(tour[i-1],best)) best = j tour[i] = best used[best] = true return
-	 * tour
-	 */
 	@Override
 	public Path findPath(Graph graph) {
-		return null;
+		Path path = new PathImpl();
+		int numberOfVertices = graph.getNumberOfVertices();
+		boolean[] used = new boolean[numberOfVertices];
+		Vertex best = null;
+		for (int i = 0; i < numberOfVertices; i++) {
+			best = null;
+			for (int j = 0; j < numberOfVertices; j++) {
+				if (!used[j]
+						&& (best == null || graph.distanceBetween(path.getVertex(i - 1), graph.getVertex(j)) < graph
+								.distanceBetween(path.getVertex(i - 1), graph.getVertex(j)))) {
+					best = graph.getVertex(j);
+				}
+				path.replaceVertex(i, best);
+				used[best.getId()] = true;
+			}
+		}
+		return path;
 	}
 
 }

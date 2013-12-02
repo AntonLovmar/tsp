@@ -3,7 +3,7 @@ package tsp.graph;
 import java.util.ArrayList;
 import java.util.List;
 
-class PathImpl implements Path {
+public class PathImpl implements Path {
 
 	private final List<Vertex> path;
 
@@ -47,4 +47,13 @@ class PathImpl implements Path {
 		return path.get(0);
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (Vertex vertex : path) {
+			sb.append(vertex.getId());
+			sb.append("\n");
+		}
+		return sb.toString();
+	}
 }

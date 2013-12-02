@@ -14,7 +14,7 @@ import tsp.graph.TSPGraph;
 import tsp.graph.Vertex;
 import tsp.graph.VertexImpl;
 
-class GraphReader {
+public class GraphReader {
 	private final BufferedReader reader;
 
 	public GraphReader(FileReader fileReader) {
