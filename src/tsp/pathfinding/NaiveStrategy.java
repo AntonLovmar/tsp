@@ -11,7 +11,11 @@ import tsp.graph.Vertex;
 public class NaiveStrategy implements PathfindingStrategy {
 
 	@Override
-	public Path findPath(Graph graph) {
+	public Path findPath(Graph graph, long deadline) {
+		return greedyStartGraph(graph, deadline);
+	}
+
+	private Path greedyStartGraph(Graph graph, long deadline) {
 		int numberOfVertices = graph.getNumberOfVertices();
 		Path path = new PathImpl(numberOfVertices);
 		Set<Vertex> used = new HashSet<>();

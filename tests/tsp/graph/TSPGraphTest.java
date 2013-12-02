@@ -1,4 +1,5 @@
 package tsp.graph;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -7,11 +8,6 @@ import java.util.List;
 
 import org.junit.Test;
 import org.mockito.Mockito;
-
-import tsp.graph.Edge;
-import tsp.graph.Graph;
-import tsp.graph.TSPGraph;
-import tsp.graph.Vertex;
 
 public class TSPGraphTest {
 
@@ -76,7 +72,7 @@ public class TSPGraphTest {
 		Mockito.when(edge.getVertices()).thenReturn(vertices);
 		return edge;
 	}
-	
+
 	@Test
 	public void getDistanceBetweenVertices() {
 		Vertex vertex1 = Mockito.mock(Vertex.class);
@@ -85,14 +81,13 @@ public class TSPGraphTest {
 		Mockito.when(vertex2.getId()).thenReturn(2);
 		Vertex vertex3 = Mockito.mock(Vertex.class);
 		Mockito.when(vertex1.getId()).thenReturn(3);
-		
+
 		Edge edge1 = mockedEdge(vertex1, vertex2);
 		Mockito.when(edge1.length()).thenReturn(3);
 		Edge edge2 = mockedEdge(vertex1, vertex3);
 		Mockito.when(edge2.length()).thenReturn(6);
 		Edge edge3 = mockedEdge(vertex2, vertex3);
 		Mockito.when(edge3.length()).thenReturn(8);
-		
 
 		List<Vertex> vertices = new ArrayList<Vertex>();
 		vertices.add(vertex1);
