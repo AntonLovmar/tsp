@@ -38,4 +38,30 @@ public class TSPGraph implements Graph {
 		return edgesForVertex;
 	}
 
+	@Override
+	public int getNumberOfVertices() {
+		return vertices.size();
+	}
+
+	@Override
+	public int getNumberOfEdges() {
+		return edges.size();
+	}
+
+	@Override
+	public int distanceBetween(Vertex vertex1, Vertex vertex2) {
+		List<Edge> edges = getEdgesForVertex(vertex1);
+		for(Edge edge : edges) {
+			if(edge.getVertices().contains(vertex2)) {
+				return edge.length();
+			}
+		}
+		return 0;
+	}
+
+	@Override
+	public Vertex getVertex(int index) {
+		return vertices.get(index);
+	}
+
 }
