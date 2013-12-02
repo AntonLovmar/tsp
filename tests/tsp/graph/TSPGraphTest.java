@@ -18,7 +18,7 @@ public class TSPGraphTest {
 		Vertex vertex2 = Mockito.mock(Vertex.class);
 		Mockito.when(vertex2.getId()).thenReturn(2);
 		Vertex vertex3 = Mockito.mock(Vertex.class);
-		Mockito.when(vertex1.getId()).thenReturn(3);
+		Mockito.when(vertex3.getId()).thenReturn(3);
 
 		Edge edge1 = mockedEdge(vertex1, vertex2);
 		Edge edge2 = mockedEdge(vertex1, vertex3);
@@ -43,9 +43,9 @@ public class TSPGraphTest {
 		Vertex vertex2 = Mockito.mock(Vertex.class);
 		Mockito.when(vertex2.getId()).thenReturn(2);
 		Vertex vertex3 = Mockito.mock(Vertex.class);
-		Mockito.when(vertex1.getId()).thenReturn(3);
+		Mockito.when(vertex3.getId()).thenReturn(3);
 		Vertex vertex4 = Mockito.mock(Vertex.class);
-		Mockito.when(vertex1.getId()).thenReturn(4);
+		Mockito.when(vertex4.getId()).thenReturn(4);
 
 		Edge edge1 = mockedEdge(vertex1, vertex2);
 		Edge edge2 = mockedEdge(vertex1, vertex3);
@@ -80,7 +80,7 @@ public class TSPGraphTest {
 		Vertex vertex2 = Mockito.mock(Vertex.class);
 		Mockito.when(vertex2.getId()).thenReturn(2);
 		Vertex vertex3 = Mockito.mock(Vertex.class);
-		Mockito.when(vertex1.getId()).thenReturn(3);
+		Mockito.when(vertex3.getId()).thenReturn(3);
 
 		Edge edge1 = mockedEdge(vertex1, vertex2);
 		Mockito.when(edge1.length()).thenReturn(3);

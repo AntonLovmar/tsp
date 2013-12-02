@@ -12,10 +12,10 @@ public class NaiveStrategy implements PathfindingStrategy {
 
 	@Override
 	public Path findPath(Graph graph, long deadline) {
-		return greedyStartGraph(graph, deadline);
+		return greedyStartPath(graph, deadline);
 	}
 
-	private Path greedyStartGraph(Graph graph, long deadline) {
+	private Path greedyStartPath(Graph graph, long deadline) {
 		int numberOfVertices = graph.getNumberOfVertices();
 		Path path = new PathImpl(numberOfVertices);
 		Set<Vertex> used = new HashSet<>();
