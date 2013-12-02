@@ -5,13 +5,6 @@ import java.util.List;
 public interface Graph {
 
 	/**
-	 * Get all the edges of the graph.
-	 * 
-	 * @return the edges of the graph.
-	 */
-	public List<Edge> getEdges();
-
-	/**
 	 * Return all the vertices for a graph.
 	 * 
 	 * @return the graph's vertices

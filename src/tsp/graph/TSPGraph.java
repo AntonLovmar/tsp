@@ -2,14 +2,15 @@ package tsp.graph;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class TSPGraph implements Graph {
 
-	private List<Vertex> vertices;
-	private List<Edge> edges;
-	private Edge[][] adjacencyMatrix;
+	private final List<Vertex> vertices;
+	private final Set<Edge> edges;
+	private final Edge[][] adjacencyMatrix;
 
-	public TSPGraph(List<Vertex> vertices, List<Edge> edges) {
+	public TSPGraph(List<Vertex> vertices, Set<Edge> edges) {
 		this.vertices = vertices;
 		this.edges = edges;
 		adjacencyMatrix = new Edge[vertices.size() + 1][vertices.size() + 1];
@@ -19,11 +20,6 @@ public class TSPGraph implements Graph {
 			adjacencyMatrix[vertex1Id][vertex2Id] = edge;
 			adjacencyMatrix[vertex2Id][vertex1Id] = edge;
 		}
-	}
-
-	@Override
-	public List<Edge> getEdges() {
-		return edges;
 	}
 
 	@Override

@@ -5,7 +5,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import tsp.graph.Edge;
 import tsp.graph.EdgeImpl;
@@ -40,20 +42,18 @@ public class GraphReader {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		List<Edge> edges = buildEdges(vertices);
+		Set<Edge> edges = buildEdges(vertices);
 		Graph graph = new TSPGraph(vertices, edges);
 		return graph;
 	}
 
-	private List<Edge> buildEdges(List<Vertex> vertices) {
-		List<Edge> edges = new ArrayList<Edge>();
+	private Set<Edge> buildEdges(List<Vertex> vertices) {
+		Set<Edge> edges = new HashSet<Edge>();
 		for (Vertex vertex : vertices) {
 			for (Vertex otherVertex : vertices) {
-				if (vertex != otherVertex) {
+				if (!vertex.equals(otherVertex)) {
 					Edge edge = new EdgeImpl(vertex, otherVertex);
-					if (!edges.contains(edge)) {
-						edges.add(edge);
-					}
+					edges.add(edge);
 				}
 			}
 		}

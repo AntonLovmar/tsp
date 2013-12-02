@@ -33,7 +33,7 @@ public class GraphReaderTest {
 			fileReader = new FileReader(new File("lib/parsetest.txt"));
 			GraphReader reader = new GraphReader(fileReader);
 			Graph graph = reader.readGraph();
-			assertEquals(3, graph.getEdges().size());
+			assertEquals(3, graph.getNumberOfEdges());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

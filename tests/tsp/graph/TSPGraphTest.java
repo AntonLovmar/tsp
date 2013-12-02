@@ -4,7 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -28,7 +30,7 @@ public class TSPGraphTest {
 		vertices.add(vertex1);
 		vertices.add(vertex2);
 		vertices.add(vertex3);
-		List<Edge> edges = new ArrayList<Edge>();
+		Set<Edge> edges = new HashSet<Edge>();
 		edges.add(edge1);
 		edges.add(edge2);
 		edges.add(edge3);
@@ -55,7 +57,7 @@ public class TSPGraphTest {
 		vertices.add(vertex1);
 		vertices.add(vertex2);
 		vertices.add(vertex3);
-		List<Edge> edges = new ArrayList<Edge>();
+		Set<Edge> edges = new HashSet<Edge>();
 		edges.add(edge1);
 		edges.add(edge2);
 		edges.add(edge3);
@@ -93,7 +95,7 @@ public class TSPGraphTest {
 		vertices.add(vertex1);
 		vertices.add(vertex2);
 		vertices.add(vertex3);
-		List<Edge> edges = new ArrayList<Edge>();
+		Set<Edge> edges = new HashSet<Edge>();
 		edges.add(edge1);
 		edges.add(edge2);
 		edges.add(edge3);
