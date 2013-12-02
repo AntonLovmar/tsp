@@ -1,10 +1,9 @@
 package tsp.reader;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,14 +17,12 @@ import tsp.graph.VertexImpl;
 public class InputReader {
 	private BufferedReader reader;
 	
+	public InputReader(FileReader fileReader) {
+		reader = new BufferedReader(fileReader);
+	}
+	
 	public InputReader() {
-		//reader = new BufferedReader(new InputStreamReader(System.in));
-		try {
-			FileReader fileReader = new FileReader(new File("/home/anton/Github/tsp/tests/parsetest.txt"));
-			reader = new BufferedReader(fileReader);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		reader = new BufferedReader(new InputStreamReader(System.in));
 	}
 	
 	public Graph readInput() {

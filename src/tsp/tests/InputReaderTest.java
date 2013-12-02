@@ -2,6 +2,10 @@ package tsp.tests;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 import org.junit.Test;
 
 import tsp.graph.Graph;
@@ -11,15 +15,27 @@ public class InputReaderTest {
 
 	@Test
 	public void numberOfVerticesCorrect() {
-		InputReader reader = new InputReader();
-		Graph graph = reader.readInput();
-		assertEquals(3, graph.getVertices().size());
+		FileReader fileReader;
+		try {
+			fileReader = new FileReader(new File("/home/anton/Github/tsp/tests/parsetest.txt"));
+			InputReader reader = new InputReader(fileReader);
+			Graph graph = reader.readInput();
+			assertEquals(3, graph.getVertices().size());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
 	public void numberOfEdgesCorrect() {
-		InputReader reader = new InputReader();
-		Graph graph = reader.readInput();
-		assertEquals(3, graph.getEdges().size());
+		FileReader fileReader;
+		try {
+			fileReader = new FileReader(new File("/home/anton/Github/tsp/tests/parsetest.txt"));
+			InputReader reader = new InputReader(fileReader);
+			Graph graph = reader.readInput();
+			assertEquals(3, graph.getEdges().size());
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 }
