@@ -32,7 +32,7 @@ public class TSPGraphTest {
 		vertices.add(vertex2);
 		vertices.add(vertex3);
 
-		Graph graph = new TSPGraph(vertices);
+		Graph graph = new Graph(vertices);
 		assertEquals(1, graph.distanceBetween(vertex1, vertex2));
 		assertEquals(5, graph.distanceBetween(vertex1, vertex3));
 		assertEquals(4, graph.distanceBetween(vertex2, vertex3));

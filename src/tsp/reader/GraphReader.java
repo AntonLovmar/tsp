@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tsp.graph.Graph;
-import tsp.graph.TSPGraph;
 import tsp.graph.Vertex;
-import tsp.graph.VertexImpl;
 
 public class GraphReader {
 	private final BufferedReader reader;
@@ -33,12 +31,12 @@ public class GraphReader {
 				String[] xAndY = line.split(" ");
 				double x = Double.parseDouble(xAndY[0]);
 				double y = Double.parseDouble(xAndY[1]);
-				vertices.add(new VertexImpl(i, x, y));
+				vertices.add(new Vertex(i, x, y));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		Graph graph = new TSPGraph(vertices);
+		Graph graph = new Graph(vertices);
 		return graph;
 	}
 
