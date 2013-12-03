@@ -26,6 +26,7 @@ public class KruskalPathfindingStrategy implements PathfindingStrategy {
 
 		while (!edges.isEmpty()) {
 			Edge e = edges.pollFirst();
+
 		}
 
 		return null;
