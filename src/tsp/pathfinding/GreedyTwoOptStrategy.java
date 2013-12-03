@@ -24,7 +24,7 @@ public class GreedyTwoOptStrategy implements PathfindingStrategy {
 					if (System.currentTimeMillis() > deadline) {
 						return currentPath;
 					}
-					Path newPath = twoOptSwap(currentPath, i, k, graph);
+					Path newPath = twoOptSwap(currentPath, i, k, graph.getNumberOfVertices());
 					int newDistance = graph.totalLength(newPath.getPath());
 					if (newDistance < bestDistance) {
 						currentPath = newPath;
@@ -35,15 +35,15 @@ public class GreedyTwoOptStrategy implements PathfindingStrategy {
 		return currentPath;
 	}
 
-	private Path twoOptSwap(Path path, int i, int k, Graph graph) {
-		Path newPath = new PathImpl(graph.getNumberOfVertices());
-		for (int v = 0; v < i; v++) {
+	private Path twoOptSwap(Path path, int reverseFrom, int reverseTo, int numberOfVertices) {
+		Path newPath = new PathImpl(numberOfVertices);
+		for (int v = 0; v < reverseFrom; v++) {
 			newPath.addToPath(path.getVertex(v));
 		}
-		for (int v = k; v >= i; v--) {
+		for (int v = reverseTo; v >= reverseFrom; v--) {
 			newPath.addToPath(path.getVertex(v));
 		}
-		for (int v = k + 1; v < graph.getNumberOfVertices(); v++) {
+		for (int v = reverseTo + 1; v < numberOfVertices; v++) {
 			newPath.addToPath(path.getVertex(v));
 		}
 		return newPath;
