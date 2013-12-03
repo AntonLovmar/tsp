@@ -8,7 +8,7 @@ import tsp.graph.Path;
 import tsp.graph.PathImpl;
 import tsp.graph.Vertex;
 
-public class GreedyStrategy implements PathfindingStrategy {
+public class GreedyPathfindingStrategy implements PathfindingStrategy {
 
 	@Override
 	public Path findPath(Graph graph) {
