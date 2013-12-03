@@ -17,8 +17,9 @@ public class TwoOptStrategy implements OptimizationStrategy {
 					if (System.currentTimeMillis() > deadline) {
 						return path;
 					}
-					if (swapGivesLessDistance(graph, path, i, k))
+					if (swapGivesLessDistance(graph, path, i, k)) {
 						path.reverseBetweenIndices(i, k);
+					}
 				}
 			}
 		}

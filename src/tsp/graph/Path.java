@@ -77,6 +77,13 @@ public class Path {
 		return path.get(index % path.size());
 	}
 
+	@Override
+	public Path clone() {
+		List<Vertex> path = new ArrayList<Vertex>(this.path.size());
+		path.addAll(this.path);
+		return new Path(path);
+	}
+
 	/**
 	 * Returns the first vertex in the path.
 	 * 
