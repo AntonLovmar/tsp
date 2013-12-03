@@ -11,6 +11,10 @@ public class Path {
 		path = new ArrayList<>(length);
 	}
 
+	public Path(List<Vertex> path) {
+		this.path = path;
+	}
+
 	/**
 	 * Returns the path as a list of vertices. The first vertex in the list
 	 * represents the first vertex in the path and so on.
