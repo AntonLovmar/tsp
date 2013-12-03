@@ -31,10 +31,8 @@ public class PathImpl implements Path {
 	public void swapVerticesAt(int firstIndex, int secondIndex) {
 		Vertex first = path.get(firstIndex);
 		Vertex second = path.get(secondIndex);
-		path.remove(firstIndex);
-		path.add(firstIndex, second);
-		path.remove(secondIndex);
-		path.add(secondIndex, first);
+		path.set(secondIndex, first);
+		path.set(firstIndex, second);
 	}
 
 	@Override
