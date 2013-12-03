@@ -25,7 +25,9 @@ public class GreedyTwoOptStrategy implements PathfindingStrategy {
 					}
 					path.reverseBetweenIndices(i, k);
 					int newDistance = graph.totalLength(path.getPath());
-					if (newDistance > bestDistance) {
+					if (newDistance <= bestDistance) {
+						bestDistance = newDistance;
+					} else {
 						path.reverseBetweenIndices(i, k);
 					}
 				}
