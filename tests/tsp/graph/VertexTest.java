@@ -7,7 +7,7 @@ import org.junit.Test;
 import tsp.graph.Vertex;
 import tsp.graph.Vertex;
 
-public class VertexImplTest {
+public class VertexTest {
 
 	@Test
 	public void equalsWithEqualObject() {
