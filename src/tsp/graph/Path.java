@@ -68,9 +68,9 @@ public class Path {
 	 *         not filled.
 	 */
 	public Vertex getVertex(int index) {
-		if (index >= path.size() || index < 0)
-			return null;
-		return path.get(index);
+		if (index < 0)
+			index += path.size();
+		return path.get(index % path.size());
 	}
 
 	/**
