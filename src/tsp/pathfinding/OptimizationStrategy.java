@@ -10,17 +10,19 @@ import tsp.graph.Path;
  * @author anton
  * 
  */
-public interface PathfindingStrategy {
+public interface OptimizationStrategy {
 
 	/**
-	 * Find a path which traverses all vertices in the graph.
+	 * Improves the path by decreasing the length.
 	 * 
+	 * @param path
+	 *            The path to improve.
 	 * @param graph
 	 *            A graph in which the path will be found
 	 * @param deadline
 	 *            the time which we will fail
 	 * @return A path through the graph
 	 */
-	public Path findPath(Graph graph);
+	public Path optimize(Path path, Graph graph, long deadline);
 
 }

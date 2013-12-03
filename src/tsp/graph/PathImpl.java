@@ -59,10 +59,10 @@ public class PathImpl implements Path {
 
 	@Override
 	public void reverseBetweenIndices(int reverseFrom, int reverseTo) {
-		int i = 0;
-		for (int v = reverseFrom; v < reverseTo; v++) {
-			swapVerticesAt(v, reverseTo - i);
-			i++;
+		while (reverseTo > reverseFrom) {
+			swapVerticesAt(reverseFrom, reverseTo);
+			reverseFrom++;
+			reverseTo--;
 		}
 	}
 }
