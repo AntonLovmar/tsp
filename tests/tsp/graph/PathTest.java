@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-public class PathImplTest {
+public class PathTest {
 
 	@Test
 	public void testReplaceVertex() {
@@ -18,7 +18,7 @@ public class PathImplTest {
 		Vertex vertex4 = Mockito.mock(Vertex.class);
 		Mockito.when(vertex4.getId()).thenReturn(4);
 
-		Path path = new PathImpl(4);
+		Path path = new Path(4);
 		path.addToPath(vertex);
 		path.addToPath(vertex2);
 		path.addToPath(vertex3);
@@ -38,7 +38,7 @@ public class PathImplTest {
 		Vertex vertex4 = Mockito.mock(Vertex.class);
 		Mockito.when(vertex4.getId()).thenReturn(4);
 
-		Path path = new PathImpl(4);
+		Path path = new Path(4);
 		path.addToPath(vertex);
 		path.addToPath(vertex2);
 		path.addToPath(vertex3);
@@ -62,7 +62,7 @@ public class PathImplTest {
 		Vertex vertex4 = Mockito.mock(Vertex.class);
 		Mockito.when(vertex4.getId()).thenReturn(4);
 
-		Path path = new PathImpl(4);
+		Path path = new Path(4);
 		path.addToPath(vertex);
 		path.addToPath(vertex2);
 		path.addToPath(vertex3);

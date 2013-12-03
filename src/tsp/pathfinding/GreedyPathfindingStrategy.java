@@ -5,7 +5,6 @@ import java.util.Set;
 
 import tsp.graph.Graph;
 import tsp.graph.Path;
-import tsp.graph.PathImpl;
 import tsp.graph.Vertex;
 
 public class GreedyPathfindingStrategy implements PathfindingStrategy {
@@ -17,7 +16,7 @@ public class GreedyPathfindingStrategy implements PathfindingStrategy {
 
 	private Path greedyStartPath(Graph graph) {
 		int numberOfVertices = graph.getNumberOfVertices();
-		Path path = new PathImpl(numberOfVertices);
+		Path path = new Path(numberOfVertices);
 		Set<Vertex> used = new HashSet<>();
 		Vertex bestNeighbour = null, currNeighbour = null;
 
