@@ -58,4 +58,13 @@ public class PathImpl implements Path {
 		}
 		return sb.toString();
 	}
+
+	@Override
+	public void reverseBetweenIndices(int reverseFrom, int reverseTo) {
+		int i = 0;
+		for (int v = reverseFrom; v < reverseTo; v++) {
+			swapVerticesAt(v, reverseTo - i);
+			i++;
+		}
+	}
 }

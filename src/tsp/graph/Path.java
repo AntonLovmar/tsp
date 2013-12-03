@@ -38,6 +38,16 @@ public interface Path {
 	public void addToPath(Vertex vertex);
 
 	/**
+	 * Reverses a path between the two given indices.
+	 * 
+	 * @param reverseFrom
+	 *            (inclusive) index to reverse from.
+	 * @param reverseTo
+	 *            (inclusive) index to reverse to.
+	 */
+	public void reverseBetweenIndices(int reverseFrom, int reverseTo);
+
+	/**
 	 * Replaces the vertex in the path at a certain index with a new vertex.
 	 * 
 	 * @param index
