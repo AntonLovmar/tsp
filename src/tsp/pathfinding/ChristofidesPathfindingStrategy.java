@@ -76,7 +76,7 @@ public class ChristofidesPathfindingStrategy implements PathfindingStrategy {
 			Edge e = edges.pollFirst();
 			int u = e.getVertex1().getId();
 			int v = e.getVertex2().getId();
-			if (vSets.get(u).containsAll(vSets.get(v)) || vSets.get(v).containsAll(vSets.get(u))) {
+			if (vSets.get(u).equals(vSets.get(v))) {
 				continue;
 			} else {
 				spanningTreeEdges.add(e);
