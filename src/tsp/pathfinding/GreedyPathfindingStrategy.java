@@ -18,9 +18,9 @@ public class GreedyPathfindingStrategy implements PathfindingStrategy {
 	@Override
 	public Path findPath(Graph graph) {
 		this.graph = graph;
+		long deadline = System.currentTimeMillis() + 800;
 		List<List<Vertex>> greedyPath = preComputeGreedyPath(graph);
-		System.out.println(greedyPath);
-		return greedyStartPath(graph, greedyPath, System.currentTimeMillis() + 500);
+		return greedyStartPath(graph, greedyPath, deadline);
 	}
 
 	private List<List<Vertex>> preComputeGreedyPath(Graph graph) {
@@ -28,7 +28,7 @@ public class GreedyPathfindingStrategy implements PathfindingStrategy {
 		List<List<Vertex>> greedyPath = new ArrayList<List<Vertex>>(numberOfVertices);
 
 		for (int i = 0; i < numberOfVertices; i++) {
-			Vertex curr = graph.getVertex(0);
+			Vertex curr = graph.getVertex(i);
 			List<Vertex> closestVertices = new ArrayList<Vertex>(numberOfVertices);
 			for (int j = 0; j < numberOfVertices; j++) {
 				if (i == j)
@@ -58,8 +58,8 @@ public class GreedyPathfindingStrategy implements PathfindingStrategy {
 	private Path greedyStartPath(Graph graph, List<List<Vertex>> greedyPath, long deadline) {
 		int numberOfVertices = graph.getNumberOfVertices();
 		Path path = null;
-		Path bestPath = null;
-		int bestPathLength = Integer.MAX_VALUE;
+		Path bestPath = new Path(graph.getVertices());
+		int bestPathLength = graph.totalLength(bestPath.getPath());
 
 		for (int i = 0; i < graph.getNumberOfVertices() && System.currentTimeMillis() < deadline; i++) {
 			path = new Path(numberOfVertices);
