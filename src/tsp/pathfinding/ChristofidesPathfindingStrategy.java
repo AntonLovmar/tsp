@@ -1,8 +1,10 @@
 package tsp.pathfinding;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -13,16 +15,48 @@ import tsp.graph.Vertex;
 
 public class ChristofidesPathfindingStrategy implements PathfindingStrategy {
 
-	private Graph graph;
-
 	@Override
 	public Path findPath(Graph graph) {
+		matchUneven(findMST(graph), graph);
 		return null;
 	}
 
-	public SpanningTree findMST(Graph graph) {
+	Map<Vertex, Set<Edge>> matchUneven(Map<Vertex, Set<Edge>> verticesToEdges, Graph graph) {
+		Set<Vertex> unevenVertices = new HashSet<Vertex>();
+		for (Vertex v : verticesToEdges.keySet()) {
+			if (verticesToEdges.get(v).size() % 2 != 0) {
+				unevenVertices.add(v);
+			}
+		}
+		Set<Vertex> claimedNodes = new HashSet<Vertex>();
+		for (Vertex v : unevenVertices) {
+			if (claimedNodes.contains(v)) {
+				continue;
+			}
+			claimedNodes.add(v);
+			int bestDistance = Integer.MAX_VALUE;
+			Vertex bestDistanceVertex = null;
+
+			for (Vertex u : unevenVertices) {
+				if (claimedNodes.contains(u))
+					continue;
+				int currentDistance = graph.distanceBetween(v, u);
+				if (currentDistance < bestDistance) {
+					bestDistance = currentDistance;
+					bestDistanceVertex = u;
+				}
+			}
+			claimedNodes.add(bestDistanceVertex);
+			Edge e = new Edge(v, bestDistanceVertex, bestDistance);
+			verticesToEdges.get(v).add(e);
+			verticesToEdges.get(bestDistanceVertex).add(e);
+		}
+		return verticesToEdges;
+	}
+
+	public Map<Vertex, Set<Edge>> findMST(Graph graph) {
+		Map<Vertex, Set<Edge>> verticesToEdges = new HashMap<Vertex, Set<Edge>>(graph.getNumberOfVertices());
 		TreeSet<Edge> edges = new TreeSet<Edge>();
-		this.graph = graph;
 		for (int i = 0; i < graph.getNumberOfVertices(); i++) {
 			for (int j = 0; j < graph.getNumberOfVertices(); j++) {
 				if (i != j)
@@ -38,8 +72,6 @@ public class ChristofidesPathfindingStrategy implements PathfindingStrategy {
 			vSets.add(vertexSet);
 		}
 		Set<Edge> spanningTreeEdges = new HashSet<Edge>();
-		Set<Vertex> spanningTreeVertices = new HashSet<Vertex>();
-		System.out.println(edges);
 		while (!edges.isEmpty()) {
 			Edge e = edges.pollFirst();
 			int u = e.getVertex1().getId();
@@ -48,9 +80,7 @@ public class ChristofidesPathfindingStrategy implements PathfindingStrategy {
 				continue;
 			} else {
 				spanningTreeEdges.add(e);
-
-				spanningTreeVertices.addAll(vSets.get(v));
-				spanningTreeVertices.addAll(vSets.get(u));
+				addEdgeToMap(verticesToEdges, e);
 
 				vSets.get(u).addAll(vSets.get(v));
 				vSets.set(v, vSets.get(u));
@@ -60,26 +90,19 @@ public class ChristofidesPathfindingStrategy implements PathfindingStrategy {
 
 			}
 		}
-		return new SpanningTree(spanningTreeVertices, spanningTreeEdges);
+		return verticesToEdges;
 	}
 
-	// TODO AHHHHH, FULKOD!
-	public class SpanningTree {
-		private final Set<Vertex> vertices;
-		private final Set<Edge> edges;
+	private void addEdgeToMap(Map<Vertex, Set<Edge>> verticesToEdges, Edge e) {
+		Vertex v = e.getVertex1();
+		Vertex u = e.getVertex2();
+		if (verticesToEdges.get(v) == null)
+			verticesToEdges.put(v, new HashSet<Edge>());
+		if (verticesToEdges.get(u) == null)
+			verticesToEdges.put(u, new HashSet<Edge>());
+		verticesToEdges.get(u).add(e);
+		verticesToEdges.get(v).add(e);
 
-		public SpanningTree(Set<Vertex> vertices, Set<Edge> edges) {
-			this.vertices = vertices;
-			this.edges = edges;
-		}
-
-		public Set<Edge> getEdges() {
-			return edges;
-		}
-
-		public Set<Vertex> getVertices() {
-			return vertices;
-		}
 	}
 
 }

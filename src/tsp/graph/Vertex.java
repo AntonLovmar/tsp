@@ -1,5 +1,6 @@
 package tsp.graph;
 
+
 public class Vertex {
 
 	private final double x, y;
