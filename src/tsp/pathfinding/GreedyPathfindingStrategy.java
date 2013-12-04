@@ -3,8 +3,10 @@ package tsp.pathfinding;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import tsp.graph.Graph;
@@ -19,24 +21,24 @@ public class GreedyPathfindingStrategy implements PathfindingStrategy {
 	public Path findPath(Graph graph) {
 		this.graph = graph;
 		long deadline = System.currentTimeMillis() + 800;
-		List<List<Vertex>> greedyPath = preComputeGreedyPath(graph);
+		Map<Vertex, List<Vertex>> greedyPath = preComputeGreedyPath(graph);
 		return greedyStartPath(graph, greedyPath, deadline);
 	}
 
-	private List<List<Vertex>> preComputeGreedyPath(Graph graph) {
+	private Map<Vertex, List<Vertex>> preComputeGreedyPath(Graph graph) {
 		int numberOfVertices = graph.getNumberOfVertices();
-		List<List<Vertex>> greedyPath = new ArrayList<List<Vertex>>(numberOfVertices);
+		Map<Vertex, List<Vertex>> greedyPath = new HashMap<Vertex, List<Vertex>>(numberOfVertices);
 
-		for (int i = 0; i < numberOfVertices; i++) {
-			Vertex curr = graph.getVertex(i);
-			List<Vertex> closestVertices = new ArrayList<Vertex>(numberOfVertices);
-			for (int j = 0; j < numberOfVertices; j++) {
-				if (i == j)
+		for (Vertex curr : graph.getVertices()) {
+			List<Vertex> neighbours = new ArrayList<Vertex>(numberOfVertices);
+			for (Vertex neighbour : graph.getVertices()) {
+				if (curr.equals(neighbour))
 					continue;
-				closestVertices.add(graph.getVertex(j));
+				neighbours.add(neighbour);
 			}
-			Collections.sort(closestVertices, new NeighborComparator(curr));
-			greedyPath.add(closestVertices);
+			// Closest neighbor is first in list.
+			Collections.sort(neighbours, new NeighborComparator(curr));
+			greedyPath.put(curr, neighbours);
 		}
 		return greedyPath;
 	}
@@ -55,7 +57,7 @@ public class GreedyPathfindingStrategy implements PathfindingStrategy {
 
 	}
 
-	private Path greedyStartPath(Graph graph, List<List<Vertex>> greedyPath, long deadline) {
+	private Path greedyStartPath(Graph graph, Map<Vertex, List<Vertex>> greedyPath, long deadline) {
 		int numberOfVertices = graph.getNumberOfVertices();
 		Path path = null;
 		Path bestPath = new Path(graph.getVertices());
@@ -70,7 +72,7 @@ public class GreedyPathfindingStrategy implements PathfindingStrategy {
 
 			for (int j = 1; j < numberOfVertices; j++) {
 				currPathVertex = path.getVertex(j - 1);
-				for (Vertex neighbour : greedyPath.get(j)) {
+				for (Vertex neighbour : greedyPath.get(currPathVertex)) {
 					if (!used.contains(neighbour)) {
 						path.addToPath(neighbour);
 						used.add(neighbour);

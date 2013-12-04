@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import tsp.graph.Graph;
 import tsp.graph.Vertex;
@@ -38,6 +39,18 @@ public class GraphReader {
 		}
 		Graph graph = new Graph(vertices);
 		return graph;
+	}
+
+	public Graph generateRandomGraph(int size) {
+		Random random = new Random();
+		if (size < 0) {
+			size = random.nextInt(1000);
+		}
+		List<Vertex> vertices = new ArrayList<>(size);
+		for (int i = 0; i < size; i++) {
+			vertices.add(new Vertex(i, random.nextInt(1000000), random.nextInt(1000000)));
+		}
+		return new Graph(vertices);
 	}
 
 }
