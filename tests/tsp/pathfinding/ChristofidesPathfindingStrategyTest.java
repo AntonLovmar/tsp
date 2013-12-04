@@ -31,8 +31,8 @@ public class ChristofidesPathfindingStrategyTest {
 		SpanningTree tree = strategy.findMST(graph);
 		int sum = 0;
 		for (Edge edge : tree.getEdges()) {
-			sum += graph.distanceBetween(edge.getVertex1(), edge.getVertex2());
-			// System.out.println(edge);
+			sum += edge.getLength();
+			System.out.println(edge);
 		}
 		assertEquals(3, tree.getEdges().size());
 		assertEquals(10, sum);

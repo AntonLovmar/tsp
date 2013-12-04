@@ -1,11 +1,10 @@
 package tsp.pathfinding;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Set;
+import java.util.TreeSet;
 
 import tsp.graph.Edge;
 import tsp.graph.Graph;
@@ -22,13 +21,13 @@ public class ChristofidesPathfindingStrategy implements PathfindingStrategy {
 	}
 
 	public SpanningTree findMST(Graph graph) {
-		PriorityQueue<Edge> edges = new PriorityQueue<Edge>(graph.getNumberOfVertices() * graph.getNumberOfVertices(),
-				new EdgeWeightComparator());
+		TreeSet<Edge> edges = new TreeSet<Edge>();
 		this.graph = graph;
 		for (int i = 0; i < graph.getNumberOfVertices(); i++) {
 			for (int j = 0; j < graph.getNumberOfVertices(); j++) {
 				if (i != j)
-					edges.add(new Edge(graph.getVertex(i), graph.getVertex(j)));
+					edges.add(new Edge(graph.getVertex(i), graph.getVertex(j), graph.distanceBetween(
+							graph.getVertex(i), graph.getVertex(j))));
 			}
 		}
 
@@ -40,8 +39,9 @@ public class ChristofidesPathfindingStrategy implements PathfindingStrategy {
 		}
 		Set<Edge> spanningTreeEdges = new HashSet<Edge>();
 		Set<Vertex> spanningTreeVertices = new HashSet<Vertex>();
+		System.out.println(edges);
 		while (!edges.isEmpty()) {
-			Edge e = edges.poll();
+			Edge e = edges.pollFirst();
 			int u = e.getVertex1().getId();
 			int v = e.getVertex2().getId();
 			if (vSets.get(u).containsAll(vSets.get(v)) || vSets.get(v).containsAll(vSets.get(u))) {
@@ -65,8 +65,8 @@ public class ChristofidesPathfindingStrategy implements PathfindingStrategy {
 
 	// TODO AHHHHH, FULKOD!
 	public class SpanningTree {
-		private Set<Vertex> vertices;
-		private Set<Edge> edges;
+		private final Set<Vertex> vertices;
+		private final Set<Edge> edges;
 
 		public SpanningTree(Set<Vertex> vertices, Set<Edge> edges) {
 			this.vertices = vertices;
@@ -79,15 +79,6 @@ public class ChristofidesPathfindingStrategy implements PathfindingStrategy {
 
 		public Set<Vertex> getVertices() {
 			return vertices;
-		}
-	}
-
-	private class EdgeWeightComparator implements Comparator<Edge> {
-
-		@Override
-		public int compare(Edge o1, Edge o2) {
-			return graph.distanceBetween(o1.getVertex1(), o1.getVertex2())
-					- graph.distanceBetween(o2.getVertex1(), o2.getVertex2());
 		}
 	}
 
