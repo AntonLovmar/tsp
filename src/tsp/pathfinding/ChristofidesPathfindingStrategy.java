@@ -60,22 +60,30 @@ public class ChristofidesPathfindingStrategy implements PathfindingStrategy {
 			Edge e = edges.pollFirst();
 			int u = e.getVertex1().getId();
 			int v = e.getVertex2().getId();
-			if (vSets.get(u).containsAll(vSets.get(v)) || vSets.get(v).containsAll(vSets.get(u))) {
+			if (vSets.get(u).equals(vSets.get(v))) {
 				continue;
 			} else {
 				spanningTreeEdges.add(e);
 				addEdgeToMap(verticesToEdges, e);
 
-				vSets.get(u).addAll(vSets.get(v));
-				vSets.set(v, vSets.get(u));
-
+				mergeSets(vSets.get(v), vSets.get(u), vSets);
 				if (spanningTreeEdges.size() == graph.getNumberOfVertices() - 1)
 					break;
 
 			}
 		}
-		numEdges = spanningTreeEdges.size();
 		return verticesToEdges;
+	}
+
+	private void mergeSets(Set<Vertex> set1, Set<Vertex> set2, List<Set<Vertex>> allSets) {
+		set1.addAll(set2);
+		for (Vertex v : set1) {
+			allSets.get(v.getId()).addAll(set2);
+		}
+		set2.addAll(set1);
+		for (Vertex v : set1) {
+			allSets.get(v.getId()).addAll(set1);
+		}
 	}
 
 	private void addEdgeToMap(Map<Vertex, Set<Edge>> verticesToEdges, Edge e) {
