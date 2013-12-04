@@ -17,7 +17,6 @@ public class Solver {
 		Graph graph = reader.readGraph();
 		Path path = solver.solveWithStrategy(new GreedyPathfindingStrategy(), new TwoOptStrategy(), graph, deadline);
 		System.out.println(path);
-		System.out.println(graph.totalLength(path.getPath()));
 	}
 
 	public Path solveWithStrategy(PathfindingStrategy pathFinder, OptimizationStrategy optimizer, Graph graph,

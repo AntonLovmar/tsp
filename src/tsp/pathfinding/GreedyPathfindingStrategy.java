@@ -1,6 +1,10 @@
 package tsp.pathfinding;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import tsp.graph.Graph;
@@ -9,37 +13,77 @@ import tsp.graph.Vertex;
 
 public class GreedyPathfindingStrategy implements PathfindingStrategy {
 
+	private Graph graph;
+
 	@Override
 	public Path findPath(Graph graph) {
-		return greedyStartPath(graph);
+		this.graph = graph;
+		List<List<Vertex>> greedyPath = preComputeGreedyPath(graph);
+		System.out.println(greedyPath);
+		return greedyStartPath(graph, greedyPath, System.currentTimeMillis() + 500);
 	}
 
-	private Path greedyStartPath(Graph graph) {
+	private List<List<Vertex>> preComputeGreedyPath(Graph graph) {
 		int numberOfVertices = graph.getNumberOfVertices();
-		Path path = new Path(numberOfVertices);
-		Set<Vertex> used = new HashSet<>();
-		Vertex bestNeighbour = null, currNeighbour = null;
+		List<List<Vertex>> greedyPath = new ArrayList<List<Vertex>>(numberOfVertices);
 
-		Vertex currPathVertex = graph.getVertex(0);
-		used.add(currPathVertex);
-		path.addToPath(currPathVertex);
-
-		for (int i = 1; i < numberOfVertices; i++) {
-			currPathVertex = path.getVertex(i - 1);
-			bestNeighbour = null;
-			for (int j = 1; j < numberOfVertices; j++) {
-				currNeighbour = graph.getVertex(j);
-				if (used.contains(currNeighbour))
+		for (int i = 0; i < numberOfVertices; i++) {
+			Vertex curr = graph.getVertex(0);
+			List<Vertex> closestVertices = new ArrayList<Vertex>(numberOfVertices);
+			for (int j = 0; j < numberOfVertices; j++) {
+				if (i == j)
 					continue;
-				if (bestNeighbour == null
-						|| graph.distanceBetween(currPathVertex, currNeighbour) < graph.distanceBetween(currPathVertex,
-								bestNeighbour)) {
-					bestNeighbour = currNeighbour;
+				closestVertices.add(graph.getVertex(j));
+			}
+			Collections.sort(closestVertices, new NeighborComparator(curr));
+			greedyPath.add(closestVertices);
+		}
+		return greedyPath;
+	}
+
+	private class NeighborComparator implements Comparator<Vertex> {
+		Vertex root;
+
+		public NeighborComparator(Vertex root) {
+			this.root = root;
+		}
+
+		@Override
+		public int compare(Vertex arg0, Vertex arg1) {
+			return graph.distanceBetween(root, arg0) - graph.distanceBetween(root, arg1);
+		}
+
+	}
+
+	private Path greedyStartPath(Graph graph, List<List<Vertex>> greedyPath, long deadline) {
+		int numberOfVertices = graph.getNumberOfVertices();
+		Path path = null;
+		Path bestPath = null;
+		int bestPathLength = Integer.MAX_VALUE;
+
+		for (int i = 0; i < graph.getNumberOfVertices() && System.currentTimeMillis() < deadline; i++) {
+			path = new Path(numberOfVertices);
+			Set<Vertex> used = new HashSet<>();
+			Vertex currPathVertex = graph.getVertex(i);
+			used.add(currPathVertex);
+			path.addToPath(currPathVertex);
+
+			for (int j = 1; j < numberOfVertices; j++) {
+				currPathVertex = path.getVertex(j - 1);
+				for (Vertex neighbour : greedyPath.get(j)) {
+					if (!used.contains(neighbour)) {
+						path.addToPath(neighbour);
+						used.add(neighbour);
+						break;
+					}
 				}
 			}
-			path.addToPath(bestNeighbour);
-			used.add(bestNeighbour);
+			int pathLength = graph.totalLength(path.getPath());
+			if (pathLength < bestPathLength) {
+				bestPath = path;
+				bestPathLength = pathLength;
+			}
 		}
-		return path;
+		return bestPath;
 	}
 }

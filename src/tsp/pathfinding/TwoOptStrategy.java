@@ -27,8 +27,13 @@ public class TwoOptStrategy implements OptimizationStrategy {
 	}
 
 	private boolean swapGivesLessDistance(Graph graph, Path path, int i, int k) {
+		return swapDistanceDifference(graph, path, i, k) < 0;
+	}
+
+	private int swapDistanceDifference(Graph graph, Path path, int i, int k) {
 		return (graph.distanceBetween(path.getVertex(i - 1), path.getVertex(k)) + graph.distanceBetween(
-				path.getVertex(k + 1), path.getVertex(i))) < (graph.distanceBetween(path.getVertex(i - 1),
-				path.getVertex(i)) + graph.distanceBetween(path.getVertex(k), path.getVertex(k + 1)));
+				path.getVertex(k + 1), path.getVertex(i)))
+				- (graph.distanceBetween(path.getVertex(i - 1), path.getVertex(i)) + graph.distanceBetween(
+						path.getVertex(k), path.getVertex(k + 1)));
 	}
 }

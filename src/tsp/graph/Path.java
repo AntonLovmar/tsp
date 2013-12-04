@@ -7,8 +7,8 @@ public class Path {
 
 	private final List<Vertex> path;
 
-	public Path(int length) {
-		path = new ArrayList<>(length);
+	public Path(int size) {
+		path = new ArrayList<>(size);
 	}
 
 	public Path(List<Vertex> path) {
