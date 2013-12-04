@@ -13,7 +13,7 @@ import tsp.graph.Graph;
 import tsp.graph.Path;
 import tsp.graph.Vertex;
 
-public class ChristofidesPathfindingStrategy implements PathfindingStrategy {
+public class MSTPathfindingStrategy implements PathfindingStrategy {
 
 	private int numEdges;
 
