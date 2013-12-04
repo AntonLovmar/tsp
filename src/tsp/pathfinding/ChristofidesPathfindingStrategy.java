@@ -15,6 +15,8 @@ import tsp.graph.Vertex;
 
 public class ChristofidesPathfindingStrategy implements PathfindingStrategy {
 
+	private int numEdges;
+
 	@Override
 	public Path findPath(Graph graph) {
 		return buildHamiltonCycle(matchUneven(findMST(graph), graph), graph);
@@ -29,29 +31,33 @@ public class ChristofidesPathfindingStrategy implements PathfindingStrategy {
 		Vertex nextStep = null;
 
 		// Ugly as fuck, but how could we do this otherwise?
-		for (Edge e : spanningTree.get(start)) {
-			nextStep = e.getVertex2();
+		for (Edge edge : spanningTree.get(start)) {
+			nextStep = edge.getVertex1().equals(nextStep) ? edge.getVertex2() : edge.getVertex1();
+			path.add(nextStep);
+			visitedEdges.add(edge);
 			break;
 		}
 
-		while (nextStep != start) {
+		while (visitedEdges.size() < numEdges) {
 			for (Edge edge : spanningTree.get(nextStep)) {
-				if (!visitedEdges.contains(edge)
-						|| (path.size() < graph.getNumberOfVertices() && (edge.getVertex1().equals(start) || edge
-								.getVertex2().equals(start)))) {
+				if (!visitedEdges.contains(edge)) {
 					visitedEdges.add(edge);
-					if (edge.getVertex1().equals(nextStep)) {
-						path.add(edge.getVertex2());
-						nextStep = edge.getVertex2();
-					} else {
-						path.add(edge.getVertex1());
-						nextStep = edge.getVertex1();
-					}
+					nextStep = edge.getVertex1().equals(nextStep) ? edge.getVertex2() : edge.getVertex1();
+					path.add(nextStep);
 				}
 			}
 		}
 
-		return new Path(path);
+		List<Vertex> filteredPath = new ArrayList<>();
+		Set<Vertex> visited = new HashSet<>();
+		for (Vertex v : path) {
+			if (visited.contains(v))
+				continue;
+			visited.add(v);
+			filteredPath.add(v);
+		}
+
+		return new Path(filteredPath);
 	}
 
 	Map<Vertex, Set<Edge>> matchUneven(Map<Vertex, Set<Edge>> verticesToEdges, Graph graph) {
@@ -109,7 +115,7 @@ public class ChristofidesPathfindingStrategy implements PathfindingStrategy {
 			Edge e = edges.pollFirst();
 			int u = e.getVertex1().getId();
 			int v = e.getVertex2().getId();
-			if (vSets.get(u).equals(vSets.get(v))) {
+			if (vSets.get(u).containsAll(vSets.get(v)) || vSets.get(v).containsAll(vSets.get(u))) {
 				continue;
 			} else {
 				spanningTreeEdges.add(e);
@@ -123,6 +129,7 @@ public class ChristofidesPathfindingStrategy implements PathfindingStrategy {
 
 			}
 		}
+		numEdges = spanningTreeEdges.size();
 		return verticesToEdges;
 	}
 
@@ -135,7 +142,6 @@ public class ChristofidesPathfindingStrategy implements PathfindingStrategy {
 			verticesToEdges.put(u, new HashSet<Edge>());
 		verticesToEdges.get(u).add(e);
 		verticesToEdges.get(v).add(e);
-
 	}
 
 }

@@ -1,6 +1,5 @@
 package tsp.graph;
 
-
 public class Vertex {
 
 	private final double x, y;
@@ -72,6 +71,6 @@ public class Vertex {
 
 	@Override
 	public String toString() {
-		return "(" + x + ", " + y + ") ID: " + getId();
+		return "" + getId();
 	}
 }
