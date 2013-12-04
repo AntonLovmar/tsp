@@ -19,78 +19,23 @@ public class ChristofidesPathfindingStrategy implements PathfindingStrategy {
 
 	@Override
 	public Path findPath(Graph graph) {
-		return buildHamiltonCycle(matchUneven(findMST(graph), graph), graph);
+		return new Path(buildHamiltonCycle(findMST(graph), graph, new HashSet<Vertex>(), graph.getVertex(0)));
 	}
 
-	private Path buildHamiltonCycle(Map<Vertex, Set<Edge>> spanningTree, Graph graph) {
-		List<Vertex> path = new ArrayList<Vertex>(graph.getNumberOfVertices());
-		Set<Edge> visitedEdges = new HashSet<Edge>();
+	private List<Vertex> buildHamiltonCycle(Map<Vertex, Set<Edge>> spanningTree, Graph graph, Set<Vertex> visited,
+			Vertex root) {
+		List<Vertex> path = new ArrayList<>();
+		visited.add(root);
+		path.add(root);
 
-		Vertex start = graph.getVertex(0);
-		path.add(start);
-		Vertex nextStep = null;
-
-		// Ugly as fuck, but how could we do this otherwise?
-		for (Edge edge : spanningTree.get(start)) {
-			nextStep = edge.getVertex1().equals(nextStep) ? edge.getVertex2() : edge.getVertex1();
-			path.add(nextStep);
-			visitedEdges.add(edge);
-			break;
-		}
-
-		while (visitedEdges.size() < numEdges) {
-			for (Edge edge : spanningTree.get(nextStep)) {
-				if (!visitedEdges.contains(edge)) {
-					visitedEdges.add(edge);
-					nextStep = edge.getVertex1().equals(nextStep) ? edge.getVertex2() : edge.getVertex1();
-					path.add(nextStep);
-				}
-			}
-		}
-
-		List<Vertex> filteredPath = new ArrayList<>();
-		Set<Vertex> visited = new HashSet<>();
-		for (Vertex v : path) {
-			if (visited.contains(v))
+		for (Edge e : spanningTree.get(root)) {
+			Vertex next = e.getVertex1().equals(root) ? e.getVertex2() : e.getVertex1();
+			if (visited.contains(next))
 				continue;
-			visited.add(v);
-			filteredPath.add(v);
+			path.addAll(buildHamiltonCycle(spanningTree, graph, visited, next));
 		}
 
-		return new Path(filteredPath);
-	}
-
-	Map<Vertex, Set<Edge>> matchUneven(Map<Vertex, Set<Edge>> verticesToEdges, Graph graph) {
-		Set<Vertex> unevenVertices = new HashSet<Vertex>();
-		for (Vertex v : verticesToEdges.keySet()) {
-			if (verticesToEdges.get(v).size() % 2 != 0) {
-				unevenVertices.add(v);
-			}
-		}
-		Set<Vertex> claimedNodes = new HashSet<Vertex>();
-		for (Vertex v : unevenVertices) {
-			if (claimedNodes.contains(v)) {
-				continue;
-			}
-			claimedNodes.add(v);
-			int bestDistance = Integer.MAX_VALUE;
-			Vertex bestDistanceVertex = null;
-
-			for (Vertex u : unevenVertices) {
-				if (claimedNodes.contains(u))
-					continue;
-				int currentDistance = graph.distanceBetween(v, u);
-				if (currentDistance < bestDistance) {
-					bestDistance = currentDistance;
-					bestDistanceVertex = u;
-				}
-			}
-			claimedNodes.add(bestDistanceVertex);
-			Edge e = new Edge(v, bestDistanceVertex, bestDistance);
-			verticesToEdges.get(v).add(e);
-			verticesToEdges.get(bestDistanceVertex).add(e);
-		}
-		return verticesToEdges;
+		return path;
 	}
 
 	public Map<Vertex, Set<Edge>> findMST(Graph graph) {
