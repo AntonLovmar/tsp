@@ -17,8 +17,41 @@ public class ChristofidesPathfindingStrategy implements PathfindingStrategy {
 
 	@Override
 	public Path findPath(Graph graph) {
-		matchUneven(findMST(graph), graph);
-		return null;
+		return buildHamiltonCycle(matchUneven(findMST(graph), graph), graph);
+	}
+
+	private Path buildHamiltonCycle(Map<Vertex, Set<Edge>> spanningTree, Graph graph) {
+		List<Vertex> path = new ArrayList<Vertex>(graph.getNumberOfVertices());
+		Set<Edge> visitedEdges = new HashSet<Edge>();
+
+		Vertex start = graph.getVertex(0);
+		path.add(start);
+		Vertex nextStep = null;
+
+		// Ugly as fuck, but how could we do this otherwise?
+		for (Edge e : spanningTree.get(start)) {
+			nextStep = e.getVertex2();
+			break;
+		}
+
+		while (nextStep != start) {
+			for (Edge edge : spanningTree.get(nextStep)) {
+				if (!visitedEdges.contains(edge)
+						|| (path.size() < graph.getNumberOfVertices() && (edge.getVertex1().equals(start) || edge
+								.getVertex2().equals(start)))) {
+					visitedEdges.add(edge);
+					if (edge.getVertex1().equals(nextStep)) {
+						path.add(edge.getVertex2());
+						nextStep = edge.getVertex2();
+					} else {
+						path.add(edge.getVertex1());
+						nextStep = edge.getVertex1();
+					}
+				}
+			}
+		}
+
+		return new Path(path);
 	}
 
 	Map<Vertex, Set<Edge>> matchUneven(Map<Vertex, Set<Edge>> verticesToEdges, Graph graph) {
