@@ -2,7 +2,7 @@ package tsp;
 
 import tsp.graph.Graph;
 import tsp.graph.Path;
-import tsp.pathfinding.GreedyPathfindingStrategy;
+import tsp.pathfinding.NearestPathfindingStrategy;
 import tsp.pathfinding.OptimizationStrategy;
 import tsp.pathfinding.PathfindingStrategy;
 import tsp.pathfinding.TwoOptStrategy;
@@ -16,7 +16,7 @@ public class Solver {
 		GraphReader reader = new GraphReader();
 		Graph graph = reader.readGraph();
 		// Graph graph = reader.generateRandomGraph(1000);
-		Path path = solver.solveWithStrategy(new GreedyPathfindingStrategy(), new TwoOptStrategy(), graph, deadline);
+		Path path = solver.solveWithStrategy(new NearestPathfindingStrategy(), new TwoOptStrategy(), graph, deadline);
 		System.out.println(path);
 	}
 

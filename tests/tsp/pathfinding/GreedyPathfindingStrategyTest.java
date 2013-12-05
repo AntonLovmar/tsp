@@ -29,7 +29,7 @@ public class GreedyPathfindingStrategyTest {
 		Mockito.when(vertex3.getId()).thenReturn(3);
 		Mockito.when(graph.getVertex(3)).thenReturn(vertex3);
 
-		PathfindingStrategy strategy = new GreedyPathfindingStrategy();
+		PathfindingStrategy strategy = new NearestPathfindingStrategy();
 		// assertEquals(4, strategy.findPath(graph).getPath().size());
 	}
 }

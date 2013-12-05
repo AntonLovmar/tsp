@@ -1,18 +1,48 @@
 package tsp.graph;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Path {
 
 	private final List<Vertex> path;
+	private final Map<Vertex, List<Vertex>> nearestNeighbours;
+	private final Map<Vertex, Integer> indexOfElement = new HashMap<>();
 
 	public Path(int size) {
-		path = new ArrayList<>(size);
+		this(new ArrayList<Vertex>(size));
 	}
 
 	public Path(List<Vertex> path) {
+		this(path, null);
+	}
+
+	public Path(int size, Map<Vertex, List<Vertex>> nearestNeighbours) {
+		this(new ArrayList<Vertex>(size), nearestNeighbours);
+	}
+
+	public Path(List<Vertex> path, Map<Vertex, List<Vertex>> nearestNeighbours) {
 		this.path = path;
+		this.nearestNeighbours = nearestNeighbours;
+	}
+
+	public boolean hasAdjacencyMap() {
+		return nearestNeighbours != null;
+	}
+
+	public Map<Vertex, List<Vertex>> getAdjacencyMap() {
+		return nearestNeighbours;
+	}
+
+	public int indexOf(Vertex vertex) {
+		Integer index = indexOfElement.get(vertex);
+		if (index == null) {
+			index = path.indexOf(vertex);
+			indexOfElement.put(vertex, index);
+		}
+		return index;
 	}
 
 	/**
@@ -36,19 +66,6 @@ public class Path {
 	}
 
 	/**
-	 * Replaces the vertex in the path at a certain index with a new vertex.
-	 * 
-	 * @param index
-	 *            The index of the vertex to be replaced
-	 * @param newVertex
-	 *            The new vertex
-	 */
-	public void replaceVertex(int index, Vertex newVertex) {
-		path.remove(index);
-		path.add(index, newVertex);
-	}
-
-	/**
 	 * Swaps places of two vertices at the indices.
 	 * 
 	 * @param firstIndex
@@ -59,6 +76,8 @@ public class Path {
 	public void swapVerticesAt(int firstIndex, int secondIndex) {
 		Vertex first = path.get(firstIndex);
 		Vertex second = path.get(secondIndex);
+		indexOfElement.put(first, secondIndex);
+		indexOfElement.put(second, firstIndex);
 		path.set(secondIndex, first);
 		path.set(firstIndex, second);
 	}

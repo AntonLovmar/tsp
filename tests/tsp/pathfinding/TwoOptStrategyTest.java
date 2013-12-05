@@ -29,7 +29,7 @@ public class TwoOptStrategyTest {
 			e.printStackTrace();
 		}
 		Graph graph = reader.readGraph();
-		Path path = new GreedyPathfindingStrategy().findPath(graph);
+		Path path = new NearestPathfindingStrategy().findPath(graph);
 
 		int initialPathLength = graph.totalLength(path.getPath());
 
