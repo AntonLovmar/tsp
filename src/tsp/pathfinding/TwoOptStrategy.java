@@ -15,7 +15,7 @@ public class TwoOptStrategy implements OptimizationStrategy {
 		while (System.currentTimeMillis() < deadline) {
 			boolean[] visited = new boolean[graph.getNumberOfVertices()];
 
-			search: while (!visited[graph.getNumberOfVertices() - 1] && System.currentTimeMillis() < deadline) {
+			search: while (!visited[graph.getNumberOfVertices() - 1]) {
 				for (int rootIndex = 0; rootIndex < graph.getNumberOfVertices(); rootIndex++) {
 					if (visited[rootIndex])
 						continue;
