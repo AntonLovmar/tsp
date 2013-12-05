@@ -6,7 +6,7 @@ import org.mockito.Mockito;
 import tsp.graph.Graph;
 import tsp.graph.Vertex;
 
-public class GreedyPathfindingStrategyTest {
+public class NearestNeighbourPathfindingStrategyTest {
 
 	@Test
 	public void testSpanAllVertices() {
