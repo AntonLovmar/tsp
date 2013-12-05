@@ -1,12 +1,6 @@
 package tsp.pathfinding;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import tsp.graph.Graph;
@@ -15,56 +9,20 @@ import tsp.graph.Vertex;
 
 public class NearestPathfindingStrategy implements PathfindingStrategy {
 
-	private Graph graph;
-
 	@Override
 	public Path findPath(Graph graph) {
-		this.graph = graph;
 		long deadline = System.currentTimeMillis() + 800;
-		Map<Vertex, List<Vertex>> nearestNeighbours = preCompumputeNearestNeighbours(graph);
-		return nearestNeighbourPath(graph, nearestNeighbours, deadline);
+		return nearestNeighbourPath(graph, deadline);
 	}
 
-	private Map<Vertex, List<Vertex>> preCompumputeNearestNeighbours(Graph graph) {
-		int numberOfVertices = graph.getNumberOfVertices();
-		Map<Vertex, List<Vertex>> greedyPath = new HashMap<Vertex, List<Vertex>>(numberOfVertices);
-
-		for (Vertex curr : graph.getVertices()) {
-			List<Vertex> neighbours = new ArrayList<Vertex>(numberOfVertices);
-			for (Vertex neighbour : graph.getVertices()) {
-				if (curr.equals(neighbour))
-					continue;
-				neighbours.add(neighbour);
-			}
-			// Closest neighbor is first in list.
-			Collections.sort(neighbours, new NeighborComparator(curr));
-			greedyPath.put(curr, neighbours);
-		}
-		return greedyPath;
-	}
-
-	private class NeighborComparator implements Comparator<Vertex> {
-		Vertex root;
-
-		public NeighborComparator(Vertex root) {
-			this.root = root;
-		}
-
-		@Override
-		public int compare(Vertex arg0, Vertex arg1) {
-			return graph.distanceBetween(root, arg0) - graph.distanceBetween(root, arg1);
-		}
-
-	}
-
-	private Path nearestNeighbourPath(Graph graph, Map<Vertex, List<Vertex>> greedyPath, long deadline) {
+	private Path nearestNeighbourPath(Graph graph, long deadline) {
 		int numberOfVertices = graph.getNumberOfVertices();
 		Path path = null;
-		Path bestPath = new Path(graph.getVertices(), greedyPath);
+		Path bestPath = new Path(graph.getVertices());
 		int bestPathLength = graph.totalLength(bestPath.getPath());
 
 		for (int i = 0; i < graph.getNumberOfVertices() && System.currentTimeMillis() < deadline; i++) {
-			path = new Path(numberOfVertices, greedyPath);
+			path = new Path(numberOfVertices);
 			Set<Vertex> used = new HashSet<>();
 			Vertex currPathVertex = graph.getVertex(i);
 			used.add(currPathVertex);
@@ -72,7 +30,7 @@ public class NearestPathfindingStrategy implements PathfindingStrategy {
 
 			for (int j = 1; j < numberOfVertices; j++) {
 				currPathVertex = path.getVertex(j - 1);
-				for (Vertex neighbour : greedyPath.get(currPathVertex)) {
+				for (Vertex neighbour : graph.getNeighbourList(currPathVertex)) {
 					if (!used.contains(neighbour)) {
 						path.addToPath(neighbour);
 						used.add(neighbour);

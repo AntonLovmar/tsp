@@ -1,11 +1,17 @@
 package tsp.graph;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Graph {
 
 	private final List<Vertex> vertices;
 	private final int[][] adjacencyMatrix;
+	private Map<Vertex, List<Vertex>> nearestNeighbours = null;
 
 	public Graph(List<Vertex> vertices) {
 		this.vertices = vertices;
@@ -60,6 +66,31 @@ public class Graph {
 		return sum;
 	}
 
+	public List<Vertex> getNeighbourList(Vertex v) {
+		if (nearestNeighbours == null) {
+			preCompumputeNearestNeighbours();
+		}
+		return nearestNeighbours.get(v);
+	}
+
+	private void preCompumputeNearestNeighbours() {
+		int numberOfVertices = getNumberOfVertices();
+		Map<Vertex, List<Vertex>> greedyPath = new HashMap<Vertex, List<Vertex>>(numberOfVertices);
+
+		for (Vertex curr : getVertices()) {
+			List<Vertex> neighbours = new ArrayList<Vertex>(numberOfVertices);
+			for (Vertex neighbour : getVertices()) {
+				if (curr.equals(neighbour))
+					continue;
+				neighbours.add(neighbour);
+			}
+			// Closest neighbor is first in list.
+			Collections.sort(neighbours, new NeighborComparator(curr));
+			greedyPath.put(curr, neighbours);
+		}
+		nearestNeighbours = greedyPath;
+	}
+
 	/**
 	 * Returns the vertex at a certain index
 	 * 
@@ -80,5 +111,19 @@ public class Graph {
 				adjacencyMatrix[vertex.getId()][otherVertex.getId()] = length;
 			}
 		}
+	}
+
+	private class NeighborComparator implements Comparator<Vertex> {
+		Vertex root;
+
+		public NeighborComparator(Vertex root) {
+			this.root = root;
+		}
+
+		@Override
+		public int compare(Vertex arg0, Vertex arg1) {
+			return distanceBetween(root, arg0) - distanceBetween(root, arg1);
+		}
+
 	}
 }

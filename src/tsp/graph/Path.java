@@ -8,7 +8,6 @@ import java.util.Map;
 public class Path {
 
 	private final List<Vertex> path;
-	private final Map<Vertex, List<Vertex>> nearestNeighbours;
 	private final Map<Vertex, Integer> indexOfElement = new HashMap<>();
 
 	public Path(int size) {
@@ -16,24 +15,7 @@ public class Path {
 	}
 
 	public Path(List<Vertex> path) {
-		this(path, null);
-	}
-
-	public Path(int size, Map<Vertex, List<Vertex>> nearestNeighbours) {
-		this(new ArrayList<Vertex>(size), nearestNeighbours);
-	}
-
-	public Path(List<Vertex> path, Map<Vertex, List<Vertex>> nearestNeighbours) {
 		this.path = path;
-		this.nearestNeighbours = nearestNeighbours;
-	}
-
-	public boolean hasAdjacencyMap() {
-		return nearestNeighbours != null;
-	}
-
-	public Map<Vertex, List<Vertex>> getAdjacencyMap() {
-		return nearestNeighbours;
 	}
 
 	public int indexOf(Vertex vertex) {

@@ -12,30 +12,10 @@ public class TwoOptStrategy implements OptimizationStrategy {
 	}
 
 	private Path twoOpt(Path path, Graph graph, long deadline) {
-		if (path.hasAdjacencyMap()) {
-			return twoOptWithAdjacencyMap(path, graph, deadline);
-		} else {
-			while (System.currentTimeMillis() < deadline) {
-				for (int i = 0; i < graph.getNumberOfVertices() - 1; i++) {
-					for (int k = i + 1; k < graph.getNumberOfVertices(); k++) {
-						if (System.currentTimeMillis() > deadline) {
-							return path;
-						}
-						if (swapGivesLessDistanceWithIndex(graph, path, i, k)) {
-							path.reverseBetweenIndices(i, k);
-						}
-					}
-				}
-			}
-			return path;
-		}
-	}
-
-	private Path twoOptWithAdjacencyMap(Path path, Graph graph, long deadline) {
 		while (System.currentTimeMillis() < deadline) {
 			for (Vertex root : graph.getVertices()) {
 				int rootIndex = path.indexOf(root);
-				for (Vertex neighbour : path.getAdjacencyMap().get(root)) {
+				for (Vertex neighbour : graph.getNeighbourList(root)) {
 					if (System.currentTimeMillis() > deadline) {
 						return path;
 					}
