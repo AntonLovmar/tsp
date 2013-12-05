@@ -11,39 +11,29 @@ public class NearestPathfindingStrategy implements PathfindingStrategy {
 
 	@Override
 	public Path findPath(Graph graph) {
-		long deadline = System.currentTimeMillis() + 800;
-		return nearestNeighbourPath(graph, deadline);
+		return nearestNeighbourPath(graph);
 	}
 
-	private Path nearestNeighbourPath(Graph graph, long deadline) {
+	private Path nearestNeighbourPath(Graph graph) {
 		int numberOfVertices = graph.getNumberOfVertices();
-		Path path = null;
-		Path bestPath = new Path(graph.getVertices());
-		int bestPathLength = graph.totalLength(bestPath.getPath());
+		Path path = new Path(numberOfVertices);
 
-		for (int i = 0; i < graph.getNumberOfVertices() && System.currentTimeMillis() < deadline; i++) {
-			path = new Path(numberOfVertices);
-			Set<Vertex> used = new HashSet<>();
-			Vertex currPathVertex = graph.getVertex(i);
-			used.add(currPathVertex);
-			path.addToPath(currPathVertex);
+		Set<Vertex> used = new HashSet<>();
+		Vertex currPathVertex = graph.getVertex((int) (Math.random() * (graph.getNumberOfVertices() - 1)));
+		used.add(currPathVertex);
+		path.addToPath(currPathVertex);
 
-			for (int j = 1; j < numberOfVertices; j++) {
-				currPathVertex = path.getVertex(j - 1);
-				for (Vertex neighbour : graph.getNeighbourList(currPathVertex)) {
-					if (!used.contains(neighbour)) {
-						path.addToPath(neighbour);
-						used.add(neighbour);
-						break;
-					}
+		for (int j = 1; j < numberOfVertices; j++) {
+			currPathVertex = path.getVertex(j - 1);
+			for (Vertex neighbour : graph.getNeighbourList(currPathVertex)) {
+				if (!used.contains(neighbour)) {
+					path.addToPath(neighbour);
+					used.add(neighbour);
+					break;
 				}
 			}
-			int pathLength = graph.totalLength(path.getPath());
-			if (pathLength < bestPathLength) {
-				bestPath = path;
-				bestPathLength = pathLength;
-			}
 		}
-		return bestPath;
+
+		return path;
 	}
 }
