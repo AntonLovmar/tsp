@@ -1,5 +1,7 @@
 package tsp.pathfinding;
 
+import java.util.Collections;
+
 import tsp.graph.Graph;
 import tsp.graph.Path;
 import tsp.graph.Vertex;
@@ -11,42 +13,55 @@ public class TwoOptStrategy implements OptimizationStrategy {
 		return twoOpt(path, graph, deadline);
 	}
 
-	private Path twoOpt(Path path, Graph graph, long deadline) {
-		boolean[] visited = new boolean[graph.getNumberOfVertices()];
-		while (!visited[graph.getNumberOfVertices() - 1]) {
-			if (System.currentTimeMillis() + 100 > deadline)
-				return path;
-			for (int rootIndex = 1; rootIndex < graph.getNumberOfVertices(); rootIndex++) {
-				if (visited[rootIndex])
-					continue;
-				boolean gaveBetter = false;
-				for (Vertex neighbour : graph.getNeighbourList(path.getVertex((rootIndex - 1)))) {
-					int neighbourIndex = path.indexOf(neighbour);
-					if (visited[neighbourIndex])
-						continue;
+	private Path bestPath = null;
+	private int bestLength = Integer.MAX_VALUE;
 
-					if (swapGivesLessDistanceWithIndex(graph, path, rootIndex, neighbourIndex)) {
-						path.reverseBetweenIndices(rootIndex, neighbourIndex);
-						gaveBetter = true;
+	private Path twoOpt(Path path, Graph graph, long deadline) {
+		bestPath = path;
+		while (System.currentTimeMillis() < deadline) {
+			boolean[] visited = new boolean[graph.getNumberOfVertices()];
+
+			search: while (!visited[graph.getNumberOfVertices() - 1]) {
+				if (System.currentTimeMillis() + 50 > deadline)
+					return bestPath;
+
+				for (int rootIndex = 0; rootIndex < graph.getNumberOfVertices(); rootIndex++) {
+					if (visited[rootIndex])
+						continue;
+					for (Vertex neighbour : graph.getNeighbourList(path.getVertex((rootIndex)))) {
+						int neighbourIndex = path.indexOf(neighbour);
+						if (visited[neighbourIndex])
+							continue;
+
+						if (swapGivesLessDistanceBetweenIndex(graph, path, rootIndex + 1, neighbourIndex)) {
+							path.reverseBetweenIndices(rootIndex + 1, neighbourIndex);
+							continue search;
+						}
 					}
-				}
-				if (!gaveBetter) {
 					visited[rootIndex] = true;
 				}
 			}
+			int length = graph.totalLength(path.getPath());
+			if (length < bestLength) {
+				if (System.currentTimeMillis() > deadline)
+					return path;
+				bestLength = length;
+				bestPath = path.clone();
+			}
+			Collections.shuffle(path.getPath());
 		}
 
-		return path;
+		return bestPath;
 	}
 
-	private boolean swapGivesLessDistanceWithIndex(Graph graph, Path path, int i, int k) {
+	private boolean swapGivesLessDistanceBetweenIndex(Graph graph, Path path, int i, int k) {
 		return swapGivesLessDistanceWithVertices(graph, path, path.getVertex(i - 1), path.getVertex(i),
 				path.getVertex(k), path.getVertex(k + 1));
 	}
 
-	private boolean swapGivesLessDistanceWithVertices(Graph graph, Path path, Vertex beforeI, Vertex i, Vertex k,
+	private boolean swapGivesLessDistanceWithVertices(Graph graph, Path path, Vertex i, Vertex afterI, Vertex k,
 			Vertex afterK) {
-		return (graph.distanceBetween(beforeI, k) + graph.distanceBetween(i, afterK)) < (graph.distanceBetween(beforeI,
-				i) + graph.distanceBetween(k, afterK));
+		return (graph.distanceBetween(afterK, afterI) + graph.distanceBetween(i, k)) < (graph
+				.distanceBetween(afterI, i) + graph.distanceBetween(k, afterK));
 	}
 }
