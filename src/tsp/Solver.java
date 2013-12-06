@@ -11,13 +11,12 @@ import tsp.reader.GraphReader;
 public class Solver {
 
 	public static void main(String[] args) {
-		long deadline = System.currentTimeMillis() + 1300;
+		long deadline = System.currentTimeMillis() + 1450;
 		Solver solver = new Solver();
 		GraphReader reader = new GraphReader();
 		Graph graph = reader.readGraph();
 		Path path = solver.solveWithStrategy(new NearestPathfindingStrategy(), new TwoOptStrategy(), graph, deadline);
 		System.out.println(path);
-		// System.out.println(graph.totalLength(path.getPath()));
 	}
 
 	public Path solveWithStrategy(PathfindingStrategy pathFinder, OptimizationStrategy optimizer, Graph graph,

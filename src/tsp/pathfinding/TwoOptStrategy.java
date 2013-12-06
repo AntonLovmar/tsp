@@ -1,5 +1,9 @@
 package tsp.pathfinding;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import tsp.graph.Graph;
 import tsp.graph.Path;
 import tsp.graph.Vertex;
@@ -12,39 +16,43 @@ public class TwoOptStrategy implements OptimizationStrategy {
 	}
 
 	private Path twoOpt(Path path, Graph graph, long deadline) {
+		Path bestPath = path;
+		int bestLength = Integer.MAX_VALUE;
 		while (System.currentTimeMillis() < deadline) {
-			boolean[] visited = new boolean[graph.getNumberOfVertices()];
-
-			search: while (!visited[graph.getNumberOfVertices() - 1]) {
-				for (int rootIndex = 0; rootIndex < graph.getNumberOfVertices(); rootIndex++) {
-					if (visited[rootIndex])
-						continue;
-					for (Vertex neighbour : graph.getNeighbourList(path.getVertex((rootIndex)))) {
-						int neighbourIndex = path.indexOf(neighbour);
-						if (visited[neighbourIndex])
-							continue;
-
-						if (swapGivesLessDistanceBetweenIndex(graph, path, rootIndex, neighbourIndex)) {
-							path.reverseBetweenIndices(rootIndex + 1, neighbourIndex);
-							continue search;
-						}
+			boolean gotBetter = false;
+			for (Vertex root : graph.getVertices()) {
+				int i = 0;
+				for (Vertex neighbour : graph.getNeighbourList(root)) {
+					if (System.currentTimeMillis() > deadline)
+						return bestPath;
+					if (i > 100)
+						break;
+					if (swapGivesLessDistanceWithVertices(graph, path, root, path.next(root), neighbour,
+							path.next(neighbour))) {
+						path.reverseVertices(root, path.next(neighbour));
+						gotBetter = true;
 					}
-					visited[rootIndex] = true;
+					i++;
+				}
+			}
+			if (!gotBetter) {
+				List<Vertex> randomizedVertices = new ArrayList<>(graph.getVertices());
+				Collections.shuffle(randomizedVertices);
+				path = new Path(randomizedVertices);
+			} else {
+				int currLength = graph.totalLength(path);
+				if (currLength < bestLength) {
+					bestPath = path;
+					bestLength = currLength;
 				}
 			}
 		}
-
-		return path;
-	}
-
-	private boolean swapGivesLessDistanceBetweenIndex(Graph graph, Path path, int i, int k) {
-		return swapGivesLessDistanceWithVertices(graph, path, path.getVertex(i), path.getVertex(i + 1),
-				path.getVertex(k), path.getVertex(k + 1));
+		return bestPath;
 	}
 
 	private boolean swapGivesLessDistanceWithVertices(Graph graph, Path path, Vertex i, Vertex afterI, Vertex k,
 			Vertex afterK) {
-		return (graph.distanceBetween(afterK, afterI) + graph.distanceBetween(i, k)) < (graph
+		return (graph.distanceBetween(i, k) + graph.distanceBetween(afterI, afterK)) < (graph
 				.distanceBetween(afterI, i) + graph.distanceBetween(k, afterK));
 	}
 }

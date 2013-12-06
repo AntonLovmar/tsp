@@ -53,16 +53,17 @@ public class Graph {
 	/**
 	 * Calculates the total length of the path;
 	 * 
-	 * @param path
+	 * @param pathList
 	 *            an ordered list of Vertices creating the path;
 	 * @return the total length;
 	 */
-	public int totalLength(List<Vertex> path) {
+	public int totalLength(Path path) {
+		List<Vertex> pathList = path.getPath();
 		int sum = 0;
-		for (int i = 1; i < path.size(); i++) {
-			sum += distanceBetween(path.get(i - 1), path.get(i));
+		for (int i = 1; i < pathList.size(); i++) {
+			sum += distanceBetween(pathList.get(i - 1), pathList.get(i));
 		}
-		sum += distanceBetween(path.get(path.size() - 1), path.get(0));
+		sum += distanceBetween(pathList.get(pathList.size() - 1), pathList.get(0));
 		return sum;
 	}
 

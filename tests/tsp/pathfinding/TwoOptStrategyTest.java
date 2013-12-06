@@ -31,10 +31,10 @@ public class TwoOptStrategyTest {
 		Graph graph = reader.readGraph();
 		Path path = new NearestPathfindingStrategy().findPath(graph);
 
-		int initialPathLength = graph.totalLength(path.getPath());
+		int initialPathLength = graph.totalLength(path);
 
 		path = new TwoOptStrategy().optimize(path, graph, System.currentTimeMillis() + 1000);
 
-		assertTrue(graph.totalLength(path.getPath()) < initialPathLength);
+		assertTrue(graph.totalLength(path) < initialPathLength);
 	}
 }

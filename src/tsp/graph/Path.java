@@ -1,30 +1,34 @@
 package tsp.graph;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Path {
 
-	private final List<Vertex> path;
-	private final Map<Vertex, Integer> indexOfElement = new HashMap<>();
-
-	public Path(int size) {
-		this(new ArrayList<Vertex>(size));
-	}
+	private final Map<Vertex, Vertex> nextHopPath;
+	private Vertex start;
 
 	public Path(List<Vertex> path) {
-		this.path = path;
+		nextHopPath = new HashMap<>();
+		Vertex lastVertex = path.get(0);
+		start = lastVertex;
+		for (int i = 1; i < path.size(); i++) {
+			Vertex next = path.get(i);
+			nextHopPath.put(lastVertex, next);
+			lastVertex = next;
+		}
+		nextHopPath.put(lastVertex, start);
 	}
 
-	public int indexOf(Vertex vertex) {
-		Integer index = indexOfElement.get(vertex);
-		if (index == null) {
-			index = path.indexOf(vertex);
-			indexOfElement.put(vertex, index);
+	public Path(Map<Vertex, Vertex> nextHopPath) {
+		this.nextHopPath = nextHopPath;
+		for (Vertex start : nextHopPath.keySet()) {
+			this.start = start;
+			break;
 		}
-		return index;
 	}
 
 	/**
@@ -34,55 +38,27 @@ public class Path {
 	 * @return The path in the form of vertices
 	 */
 	public List<Vertex> getPath() {
+		List<Vertex> path = new ArrayList<>(nextHopPath.size());
+		Vertex curr = nextHopPath.get(start);
+		path.add(start);
+		while (!curr.equals(start)) {
+			path.add(curr);
+			curr = nextHopPath.get(curr);
+		}
 		return path;
-	}
-
-	/**
-	 * Adds a vertex to the end of the path.
-	 * 
-	 * @param vertex
-	 *            The vertex to be appended to the path.
-	 */
-	public void addToPath(Vertex vertex) {
-		path.add(vertex);
-	}
-
-	/**
-	 * Swaps places of two vertices at the indices.
-	 * 
-	 * @param firstIndex
-	 *            The index of the first vertex
-	 * @param secondIndex
-	 *            The index of the second vertex
-	 */
-	public void swapVerticesAt(int firstIndex, int secondIndex) {
-		Vertex first = path.get(firstIndex);
-		Vertex second = path.get(secondIndex);
-		indexOfElement.put(first, secondIndex);
-		indexOfElement.put(second, firstIndex);
-		path.set(secondIndex, first);
-		path.set(firstIndex, second);
-	}
-
-	/**
-	 * Retrieve the vertex at a certain index.
-	 * 
-	 * @param index
-	 *            The index of the vertex
-	 * @return the vertex at index <code>index</code>, or null if position is
-	 *         not filled.
-	 */
-	public Vertex getVertex(int index) {
-		if (index < 0)
-			index += path.size();
-		return path.get(index % path.size());
 	}
 
 	@Override
 	public Path clone() {
-		List<Vertex> path = new ArrayList<Vertex>(this.path.size());
-		path.addAll(this.path);
-		return new Path(path);
+		Map<Vertex, Vertex> nextHop = new HashMap<>();
+		nextHop.putAll(nextHopPath);
+		return new Path(nextHop);
+	}
+
+	public Path shuffle() {
+		List<Vertex> list = getPath();
+		Collections.shuffle(list);
+		return new Path(list);
 	}
 
 	/**
@@ -91,32 +67,46 @@ public class Path {
 	 * @return The first vertex in the path.
 	 */
 	public Vertex getFirst() {
-		return getVertex(0);
+		return start;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		for (Vertex vertex : path) {
-			sb.append(vertex.getId());
-			sb.append("\n");
+		Vertex curr = nextHopPath.get(start);
+		sb.append(start.getId()).append('\n');
+		while (!curr.equals(start)) {
+			sb.append(curr.getId()).append('\n');
+			curr = nextHopPath.get(curr);
 		}
 		return sb.toString();
+	}
+
+	public Vertex next(Vertex before) {
+		return nextHopPath.get(before);
 	}
 
 	/**
 	 * Reverses a path between the two given indices.
 	 * 
 	 * @param reverseFrom
-	 *            (inclusive) index to reverse from.
+	 *            (exclusive) index to reverse from.
 	 * @param reverseTo
-	 *            (inclusive) index to reverse to.
+	 *            (exclusive) index to reverse to.
 	 */
-	public void reverseBetweenIndices(int reverseFrom, int reverseTo) {
-		while (reverseTo > reverseFrom) {
-			swapVerticesAt(reverseFrom, reverseTo);
-			reverseFrom++;
-			reverseTo--;
+	public void reverseVertices(Vertex reverseFrom, Vertex reverseTo) {
+		Vertex before = reverseFrom;
+		List<Vertex> swapList = new ArrayList<>();
+		Vertex next = nextHopPath.get(before);
+		while (!next.equals(reverseTo)) {
+			swapList.add(next);
+			next = nextHopPath.get(next);
 		}
+		Collections.reverse(swapList);
+		nextHopPath.put(reverseFrom, swapList.get(0));
+		for (int i = 0; i < swapList.size() - 1; i++) {
+			nextHopPath.put(swapList.get(i), swapList.get(i + 1));
+		}
+		nextHopPath.put(swapList.get(swapList.size() - 1), reverseTo);
 	}
 }
