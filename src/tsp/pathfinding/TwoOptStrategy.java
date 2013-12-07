@@ -18,11 +18,11 @@ public class TwoOptStrategy implements OptimizationStrategy {
 	private Path twoOpt(Path path, Graph graph, long deadline) {
 		Path bestPath = path;
 		int bestLength = Integer.MAX_VALUE;
+		int maxIterations = Math.min(30, graph.getNumberOfVertices());
 		while (System.currentTimeMillis() < deadline) {
 			boolean gotBetter = false;
 			for (Vertex root : graph.getVertices()) {
 				List<Vertex> neighbourList = graph.getNeighbourList(root);
-				int maxIterations = Math.min(30, neighbourList.size());
 				for (int i = 0; i < maxIterations; i++) {
 					Vertex neighbour = neighbourList.get(i);
 					if (System.currentTimeMillis() > deadline)
