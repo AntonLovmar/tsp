@@ -21,18 +21,16 @@ public class TwoOptStrategy implements OptimizationStrategy {
 		while (System.currentTimeMillis() < deadline) {
 			boolean gotBetter = false;
 			for (Vertex root : graph.getVertices()) {
-				int i = 0;
-				for (Vertex neighbour : graph.getNeighbourList(root)) {
+				List<Vertex> neighbourList = graph.getNeighbourList(root);
+				int maxIterations = Math.min(200, neighbourList.size());
+				for (int i = 0; i < maxIterations; i++) {
+					Vertex neighbour = neighbourList.get(i);
 					if (System.currentTimeMillis() > deadline)
 						return bestPath;
-					if (i > 100)
-						break;
-					if (swapGivesLessDistanceWithVertices(graph, path, root, path.next(root), neighbour,
-							path.next(neighbour))) {
+					if (swapGivesLessDistanceWithVertices(graph, root, path.next(root), neighbour, path.next(neighbour))) {
 						path.reverseVertices(root, path.next(neighbour));
 						gotBetter = true;
 					}
-					i++;
 				}
 			}
 			if (!gotBetter) {
@@ -50,8 +48,7 @@ public class TwoOptStrategy implements OptimizationStrategy {
 		return bestPath;
 	}
 
-	private boolean swapGivesLessDistanceWithVertices(Graph graph, Path path, Vertex i, Vertex afterI, Vertex k,
-			Vertex afterK) {
+	private boolean swapGivesLessDistanceWithVertices(Graph graph, Vertex i, Vertex afterI, Vertex k, Vertex afterK) {
 		return (graph.distanceBetween(i, k) + graph.distanceBetween(afterI, afterK)) < (graph
 				.distanceBetween(afterI, i) + graph.distanceBetween(k, afterK));
 	}
