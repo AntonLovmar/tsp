@@ -50,7 +50,7 @@ public class TwoOptStrategy implements OptimizationStrategy {
 
 	/**
 	 * Checks if a new edge between Vertex i and Vertex k would result in a
-	 * short path.
+	 * shorter path.
 	 * 
 	 * @param graph
 	 * @param i
