@@ -48,6 +48,19 @@ public class TwoOptStrategy implements OptimizationStrategy {
 		return bestPath;
 	}
 
+	/**
+	 * Checks if a new edge between Vertex i and Vertex k would result in a
+	 * short path.
+	 * 
+	 * @param graph
+	 * @param i
+	 * @param afterI
+	 *            The vertex after i in the path.
+	 * @param k
+	 * @param afterK
+	 *            The vertex after k in the path
+	 * @return
+	 */
 	private boolean swapGivesLessDistanceWithVertices(Graph graph, Vertex i, Vertex afterI, Vertex k, Vertex afterK) {
 		return (graph.distanceBetween(i, k) + graph.distanceBetween(afterI, afterK)) < (graph
 				.distanceBetween(afterI, i) + graph.distanceBetween(k, afterK));
