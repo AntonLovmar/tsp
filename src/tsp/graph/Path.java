@@ -102,11 +102,10 @@ public class Path {
 			swapList.add(next);
 			next = nextHopPath.get(next);
 		}
-		Collections.reverse(swapList);
-		nextHopPath.put(reverseFrom, swapList.get(0));
+		nextHopPath.put(reverseFrom, swapList.get(swapList.size() - 1));
 		for (int i = 0; i < swapList.size() - 1; i++) {
-			nextHopPath.put(swapList.get(i), swapList.get(i + 1));
+			nextHopPath.put(swapList.get(i + 1), swapList.get(i));
 		}
-		nextHopPath.put(swapList.get(swapList.size() - 1), reverseTo);
+		nextHopPath.put(swapList.get(0), reverseTo);
 	}
 }
