@@ -16,6 +16,7 @@ public class TwoOptStrategy implements OptimizationStrategy {
 	}
 
 	private Path twoOpt(Path path, Graph graph, long deadline) {
+		List<Vertex> randomizedVertices = new ArrayList<>(graph.getVertices());
 		Path bestPath = path;
 		int bestLength = Integer.MAX_VALUE;
 		int maxIterations = Math.min(30, graph.getNumberOfVertices() - 1);
@@ -34,14 +35,14 @@ public class TwoOptStrategy implements OptimizationStrategy {
 					if (distanceDifference < bestSwapDifference) {
 						bestSwapDifference = distanceDifference;
 						bestNeighbour = neighbour;
-						gotBetter = true;
 					}
 				}
-				if (bestSwapDifference < 0)
+				if (bestSwapDifference < 0) {
 					path.reverseVertices(root, path.next(bestNeighbour));
+					gotBetter = true;
+				}
 			}
 			if (!gotBetter) {
-				List<Vertex> randomizedVertices = new ArrayList<>(graph.getVertices());
 				Collections.shuffle(randomizedVertices);
 				path = new Path(randomizedVertices);
 			} else {
