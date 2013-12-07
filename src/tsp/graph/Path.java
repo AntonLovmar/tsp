@@ -1,7 +1,6 @@
 package tsp.graph;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,12 +54,6 @@ public class Path {
 		return new Path(nextHop);
 	}
 
-	public Path shuffle() {
-		List<Vertex> list = getPath();
-		Collections.shuffle(list);
-		return new Path(list);
-	}
-
 	/**
 	 * Returns the first vertex in the path.
 	 * 
@@ -87,12 +80,20 @@ public class Path {
 	}
 
 	/**
-	 * Reverses a path between the two given indices.
+	 * Reverses a path between the two given indices. Can be thought of as
+	 * creating an edge between reverseFrom and the the element before reverseTo
+	 * and an edge between reverseTo and the element after reverseFrom, while
+	 * removing edges between reverseFrom and the one after, and between the one
+	 * before reverseTo and reverseTo.
+	 * 
+	 * Before this method is called: ReverseFrom -> A -> ... -> B -> ReverseTo
+	 * 
+	 * After this method is called: ReverseFrom -> B -> ... -> A -> ReverseTo
 	 * 
 	 * @param reverseFrom
-	 *            (exclusive) index to reverse from.
+	 *            (exclusive) Vertex to reverse from.
 	 * @param reverseTo
-	 *            (exclusive) index to reverse to.
+	 *            (exclusive) Vertex to reverse to.
 	 */
 	public void reverseVertices(Vertex reverseFrom, Vertex reverseTo) {
 		Vertex before = reverseFrom;

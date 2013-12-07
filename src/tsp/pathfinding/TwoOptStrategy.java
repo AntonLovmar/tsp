@@ -2,11 +2,8 @@ package tsp.pathfinding;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import tsp.graph.Edge;
 import tsp.graph.Graph;
 import tsp.graph.Path;
 import tsp.graph.Vertex;
@@ -21,30 +18,39 @@ public class TwoOptStrategy implements OptimizationStrategy {
 	private Path twoOpt(Path path, Graph graph, long deadline) {
 		Path bestPath = path;
 		int bestLength = Integer.MAX_VALUE;
-		Set<Edge> tabuList = new HashSet<Edge>();
+		int[][] tabuMatrix = new int[graph.getNumberOfVertices()][graph.getNumberOfVertices()];
+		int maxIterations = Math.min(30, graph.getNumberOfVertices() - 1);
 		while (System.currentTimeMillis() < deadline) {
 			boolean gotBetter = false;
 			for (Vertex root : graph.getVertices()) {
 				List<Vertex> neighbourList = graph.getNeighbourList(root);
-				int maxIterations = Math.min(30, neighbourList.size());
+				int bestSwapDifference = 0;
+				Vertex bestNeighbour = null;
 				for (int i = 0; i < maxIterations; i++) {
 					Vertex neighbour = neighbourList.get(i);
 					if (System.currentTimeMillis() > deadline)
 						return bestPath;
-					if (tabuList.contains(new Edge(root, neighbour, 0))) {
+					if (tabuMatrix[root.getId()][neighbour.getId()] == 1) {
 						continue;
 					}
-					if (swapGivesLessDistanceWithVertices(graph, root, path.next(root), neighbour, path.next(neighbour))) {
-						path.reverseVertices(root, path.next(neighbour));
+					int distanceDifference = distanceDifference(graph, root, path.next(root), neighbour,
+							path.next(neighbour));
+					if (distanceDifference < bestSwapDifference) {
+						bestSwapDifference = distanceDifference;
+						bestNeighbour = neighbour;
 						gotBetter = true;
 						if (graph.distanceBetween(root, neighbour) < graph.distanceBetween(neighbour,
 								path.next(neighbour))) {
-							tabuList.add(new Edge(root, path.next(neighbour), 0));
+							tabuMatrix[root.getId()][neighbour.getId()] = 1;
+							tabuMatrix[neighbour.getId()][root.getId()] = 1;
 						} else {
-							tabuList.add(new Edge(neighbour, path.next(root), 0));
+							tabuMatrix[neighbour.getId()][path.next(neighbour).getId()] = 1;
+							tabuMatrix[path.next(neighbour).getId()][neighbour.getId()] = 1;
 						}
 					}
 				}
+				if (bestSwapDifference < 0)
+					path.reverseVertices(root, path.next(bestNeighbour));
 			}
 			if (!gotBetter) {
 				List<Vertex> randomizedVertices = new ArrayList<>(graph.getVertices());
@@ -77,5 +83,10 @@ public class TwoOptStrategy implements OptimizationStrategy {
 	private boolean swapGivesLessDistanceWithVertices(Graph graph, Vertex i, Vertex afterI, Vertex k, Vertex afterK) {
 		return (graph.distanceBetween(i, k) + graph.distanceBetween(afterI, afterK)) < (graph
 				.distanceBetween(afterI, i) + graph.distanceBetween(k, afterK));
+	}
+
+	private int distanceDifference(Graph graph, Vertex i, Vertex afterI, Vertex k, Vertex afterK) {
+		return (graph.distanceBetween(i, k) + graph.distanceBetween(afterI, afterK))
+				- (graph.distanceBetween(afterI, i) + graph.distanceBetween(k, afterK));
 	}
 }
