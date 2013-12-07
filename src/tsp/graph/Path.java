@@ -1,7 +1,6 @@
 package tsp.graph;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,12 +52,6 @@ public class Path {
 		Map<Vertex, Vertex> nextHop = new HashMap<>();
 		nextHop.putAll(nextHopPath);
 		return new Path(nextHop);
-	}
-
-	public Path shuffle() {
-		List<Vertex> list = getPath();
-		Collections.shuffle(list);
-		return new Path(list);
 	}
 
 	/**
