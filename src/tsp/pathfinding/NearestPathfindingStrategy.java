@@ -18,6 +18,7 @@ public class NearestPathfindingStrategy implements PathfindingStrategy {
 
 	private Path nearestNeighbourPath(Graph graph) {
 		int numberOfVertices = graph.getNumberOfVertices();
+
 		List<Vertex> path = new ArrayList<>(numberOfVertices);
 		Set<Vertex> used = new HashSet<>();
 

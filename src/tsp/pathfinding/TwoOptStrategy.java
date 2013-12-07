@@ -22,7 +22,7 @@ public class TwoOptStrategy implements OptimizationStrategy {
 			boolean gotBetter = false;
 			for (Vertex root : graph.getVertices()) {
 				List<Vertex> neighbourList = graph.getNeighbourList(root);
-				int maxIterations = Math.min(200, neighbourList.size());
+				int maxIterations = Math.min(30, neighbourList.size());
 				for (int i = 0; i < maxIterations; i++) {
 					Vertex neighbour = neighbourList.get(i);
 					if (System.currentTimeMillis() > deadline)
