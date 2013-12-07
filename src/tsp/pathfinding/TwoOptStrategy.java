@@ -2,8 +2,11 @@ package tsp.pathfinding;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import tsp.graph.Edge;
 import tsp.graph.Graph;
 import tsp.graph.Path;
 import tsp.graph.Vertex;
@@ -18,6 +21,7 @@ public class TwoOptStrategy implements OptimizationStrategy {
 	private Path twoOpt(Path path, Graph graph, long deadline) {
 		Path bestPath = path;
 		int bestLength = Integer.MAX_VALUE;
+		Set<Edge> tabuList = new HashSet<Edge>();
 		while (System.currentTimeMillis() < deadline) {
 			boolean gotBetter = false;
 			for (Vertex root : graph.getVertices()) {
@@ -27,9 +31,18 @@ public class TwoOptStrategy implements OptimizationStrategy {
 					Vertex neighbour = neighbourList.get(i);
 					if (System.currentTimeMillis() > deadline)
 						return bestPath;
+					if (tabuList.contains(new Edge(root, neighbour, 0))) {
+						continue;
+					}
 					if (swapGivesLessDistanceWithVertices(graph, root, path.next(root), neighbour, path.next(neighbour))) {
 						path.reverseVertices(root, path.next(neighbour));
 						gotBetter = true;
+						if (graph.distanceBetween(root, neighbour) < graph.distanceBetween(neighbour,
+								path.next(neighbour))) {
+							tabuList.add(new Edge(root, path.next(neighbour), 0));
+						} else {
+							tabuList.add(new Edge(neighbour, path.next(root), 0));
+						}
 					}
 				}
 			}

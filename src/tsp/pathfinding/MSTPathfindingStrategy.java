@@ -15,11 +15,22 @@ import tsp.graph.Vertex;
 
 public class MSTPathfindingStrategy implements PathfindingStrategy {
 
-	private int numEdges;
-
 	@Override
 	public Path findPath(Graph graph) {
-		return new Path(buildHamiltonCycle(findMST(graph), graph, new HashSet<Vertex>(), graph.getVertex(0)));
+		Map<Vertex, Set<Edge>> tree = findMST(graph);
+		int bestLength = Integer.MAX_VALUE;
+		List<Vertex> bestPath = null;
+
+		for (int i = 0; i < graph.getNumberOfVertices(); i++) {
+			List<Vertex> ham = buildHamiltonCycle(tree, graph, new HashSet<Vertex>(), graph.getVertex(i));
+			int length = graph.totalLength(new Path(ham));
+			// System.out.println("length: " + length);
+			if (length < bestLength) {
+				bestPath = ham;
+				bestLength = length;
+			}
+		}
+		return new Path(bestPath);
 	}
 
 	private List<Vertex> buildHamiltonCycle(Map<Vertex, Set<Edge>> spanningTree, Graph graph, Set<Vertex> visited,
@@ -34,11 +45,11 @@ public class MSTPathfindingStrategy implements PathfindingStrategy {
 				continue;
 			path.addAll(buildHamiltonCycle(spanningTree, graph, visited, next));
 		}
-
 		return path;
 	}
 
 	public Map<Vertex, Set<Edge>> findMST(Graph graph) {
+		long before = System.currentTimeMillis();
 		Map<Vertex, Set<Edge>> verticesToEdges = new HashMap<Vertex, Set<Edge>>(graph.getNumberOfVertices());
 		TreeSet<Edge> edges = new TreeSet<Edge>();
 		for (int i = 0; i < graph.getNumberOfVertices(); i++) {
@@ -56,6 +67,8 @@ public class MSTPathfindingStrategy implements PathfindingStrategy {
 			vSets.add(vertexSet);
 		}
 		Set<Edge> spanningTreeEdges = new HashSet<Edge>();
+		long mergeTime = 0;
+		long beforeAlg = System.currentTimeMillis();
 		while (!edges.isEmpty()) {
 			Edge e = edges.pollFirst();
 			int u = e.getVertex1().getId();
@@ -65,13 +78,17 @@ public class MSTPathfindingStrategy implements PathfindingStrategy {
 			} else {
 				spanningTreeEdges.add(e);
 				addEdgeToMap(verticesToEdges, e);
-
+				long beforeMerge = System.currentTimeMillis();
 				mergeSets(vSets.get(v), vSets.get(u), vSets);
+				mergeTime += (System.currentTimeMillis() - beforeMerge);
 				if (spanningTreeEdges.size() == graph.getNumberOfVertices() - 1)
 					break;
 
 			}
 		}
+		System.out.println("Algorithm time: " + (System.currentTimeMillis() - beforeAlg));
+		System.out.println("Time in merge: " + mergeTime);
+		System.out.println("Total time: " + (System.currentTimeMillis() - before));
 		return verticesToEdges;
 	}
 
