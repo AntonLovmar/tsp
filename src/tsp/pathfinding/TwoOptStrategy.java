@@ -18,7 +18,6 @@ public class TwoOptStrategy implements OptimizationStrategy {
 	private Path twoOpt(Path path, Graph graph, long deadline) {
 		Path bestPath = path;
 		int bestLength = Integer.MAX_VALUE;
-		int[][] tabuMatrix = new int[graph.getNumberOfVertices()][graph.getNumberOfVertices()];
 		int maxIterations = Math.min(30, graph.getNumberOfVertices() - 1);
 		while (System.currentTimeMillis() < deadline) {
 			boolean gotBetter = false;
@@ -30,23 +29,12 @@ public class TwoOptStrategy implements OptimizationStrategy {
 					Vertex neighbour = neighbourList.get(i);
 					if (System.currentTimeMillis() > deadline)
 						return bestPath;
-					if (tabuMatrix[root.getId()][neighbour.getId()] == 1) {
-						continue;
-					}
 					int distanceDifference = distanceDifference(graph, root, path.next(root), neighbour,
 							path.next(neighbour));
 					if (distanceDifference < bestSwapDifference) {
 						bestSwapDifference = distanceDifference;
 						bestNeighbour = neighbour;
 						gotBetter = true;
-						if (graph.distanceBetween(root, neighbour) < graph.distanceBetween(neighbour,
-								path.next(neighbour))) {
-							tabuMatrix[root.getId()][neighbour.getId()] = 1;
-							tabuMatrix[neighbour.getId()][root.getId()] = 1;
-						} else {
-							tabuMatrix[neighbour.getId()][path.next(neighbour).getId()] = 1;
-							tabuMatrix[path.next(neighbour).getId()][neighbour.getId()] = 1;
-						}
 					}
 				}
 				if (bestSwapDifference < 0)
