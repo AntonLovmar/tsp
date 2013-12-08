@@ -46,7 +46,7 @@ public class TwoOptStrategy implements OptimizationStrategy {
 			if (System.currentTimeMillis() + 50 > deadline)
 				return bestPath;
 			if (!gotBetter) {
-				path = randomizePartOfPath(path, 10);
+				path = randomizePartOfPath(path);
 			} else {
 				int currLength = graph.totalLength(path);
 				if (currLength < bestLength) {
@@ -63,29 +63,35 @@ public class TwoOptStrategy implements OptimizationStrategy {
 	 * shuffled part is decided by the part parameter.
 	 * 
 	 * @param path
-	 * @param part
-	 *            How much of the path is shuffled.
 	 * @return
 	 */
-	private Path randomizePartOfPath(Path path, int part) {
-		List<Vertex> pathList = path.getPath();
-		int size = pathList.size() / part;
-		int indexToRandom = new Random().nextInt(pathList.size() - size);
-		List<Vertex> shuffledPart = new ArrayList<>(pathList.subList(indexToRandom, indexToRandom + size));
+	private Path randomizePartOfPath(Path path) {
+		List<Vertex> newPathList = new ArrayList<>(path.getPath());
+		Random random = new Random();
+		final int size = Math.min(newPathList.size(), 5);
+
+		int indexToRandom = random.nextInt(newPathList.size() - size);
+		List<Vertex> shuffledPart = newPathList.subList(indexToRandom, indexToRandom + size);
 		Collections.shuffle(shuffledPart);
-
-		List<Vertex> newList = new ArrayList<>(pathList.size());
-		for (int i = 0; i < indexToRandom; i++) {
-			newList.add(pathList.get(i));
-		}
 		for (int i = 0; i < size; i++) {
-			newList.add(shuffledPart.get(i));
-		}
-		for (int i = indexToRandom + size; i < pathList.size(); i++) {
-			newList.add(pathList.get(i));
+			newPathList.set(indexToRandom + i, shuffledPart.get(i));
 		}
 
-		return new Path(newList);
+		indexToRandom = random.nextInt(newPathList.size() - size);
+		shuffledPart = newPathList.subList(indexToRandom, indexToRandom + size);
+		Collections.shuffle(shuffledPart);
+		for (int i = 0; i < size; i++) {
+			newPathList.set(indexToRandom + i, shuffledPart.get(i));
+		}
+
+		indexToRandom = random.nextInt(newPathList.size() - size);
+		shuffledPart = newPathList.subList(indexToRandom, indexToRandom + size);
+		Collections.shuffle(shuffledPart);
+		for (int i = 0; i < size; i++) {
+			newPathList.set(indexToRandom + i, shuffledPart.get(i));
+		}
+
+		return new Path(newPathList);
 	}
 
 	/**
