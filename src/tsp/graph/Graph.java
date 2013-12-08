@@ -69,12 +69,12 @@ public class Graph {
 
 	public List<Vertex> getNeighbourList(Vertex v) {
 		if (nearestNeighbours == null) {
-			preCompumputeNearestNeighbours();
+			preComputeNearestNeighbours();
 		}
 		return nearestNeighbours.get(v);
 	}
 
-	private void preCompumputeNearestNeighbours() {
+	private void preComputeNearestNeighbours() {
 		int numberOfVertices = getNumberOfVertices();
 		Map<Vertex, List<Vertex>> greedyPath = new HashMap<Vertex, List<Vertex>>(numberOfVertices);
 

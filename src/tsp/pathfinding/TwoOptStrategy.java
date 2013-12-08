@@ -22,7 +22,7 @@ public class TwoOptStrategy implements OptimizationStrategy {
 		int maxIterations = Math.min(30, graph.getNumberOfVertices() - 1);
 		while (System.currentTimeMillis() < deadline) {
 			boolean gotBetter = false;
-			for (Vertex root : graph.getVertices()) {
+			search: for (Vertex root : graph.getVertices()) {
 				List<Vertex> neighbourList = graph.getNeighbourList(root);
 				int bestSwapDifference = 0;
 				Vertex bestNeighbour = null;
@@ -40,6 +40,7 @@ public class TwoOptStrategy implements OptimizationStrategy {
 				if (bestSwapDifference < 0) {
 					path.reverseVertices(root, path.next(bestNeighbour));
 					gotBetter = true;
+					continue search;
 				}
 			}
 			if (System.currentTimeMillis() + 50 > deadline)
