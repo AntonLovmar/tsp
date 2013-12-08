@@ -98,7 +98,7 @@ public class Path {
 	public void reverseVertices(Vertex reverseFrom, Vertex reverseTo) {
 		Vertex before = reverseFrom;
 		Vertex curr = nextHopPath.get(before);
-		Vertex next = nextHopPath.get(curr);
+		Vertex next;
 		while (!curr.equals(reverseTo)) {
 			next = nextHopPath.get(curr);
 			nextHopPath.put(curr, before);
