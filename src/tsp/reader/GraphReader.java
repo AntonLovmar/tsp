@@ -27,7 +27,7 @@ public class GraphReader {
 		try {
 			String line = reader.readLine();
 			int numberOfVertices = Integer.parseInt(line);
-			for (int i = 0; i < numberOfVertices; i++) {
+			for (short i = 0; i < numberOfVertices; i++) {
 				line = reader.readLine();
 				String[] xAndY = line.split(" ");
 				double x = Double.parseDouble(xAndY[0]);
@@ -47,7 +47,7 @@ public class GraphReader {
 			size = random.nextInt(1000);
 		}
 		List<Vertex> vertices = new ArrayList<>(size);
-		for (int i = 0; i < size; i++) {
+		for (short i = 0; i < size; i++) {
 			vertices.add(new Vertex(i, random.nextInt(1000000), random.nextInt(1000000)));
 		}
 		return new Graph(vertices);

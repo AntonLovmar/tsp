@@ -68,27 +68,15 @@ public class TwoOptStrategy implements OptimizationStrategy {
 	private Path randomizePartOfPath(Path path) {
 		List<Vertex> newPathList = new ArrayList<>(path.getPath());
 		Random random = new Random();
-		final int size = Math.min(newPathList.size(), 5);
+		final int size = Math.min(newPathList.size(), 4);
 
-		int indexToRandom = random.nextInt(newPathList.size() - size);
-		List<Vertex> shuffledPart = newPathList.subList(indexToRandom, indexToRandom + size);
-		Collections.shuffle(shuffledPart);
-		for (int i = 0; i < size; i++) {
-			newPathList.set(indexToRandom + i, shuffledPart.get(i));
-		}
-
-		indexToRandom = random.nextInt(newPathList.size() - size);
-		shuffledPart = newPathList.subList(indexToRandom, indexToRandom + size);
-		Collections.shuffle(shuffledPart);
-		for (int i = 0; i < size; i++) {
-			newPathList.set(indexToRandom + i, shuffledPart.get(i));
-		}
-
-		indexToRandom = random.nextInt(newPathList.size() - size);
-		shuffledPart = newPathList.subList(indexToRandom, indexToRandom + size);
-		Collections.shuffle(shuffledPart);
-		for (int i = 0; i < size; i++) {
-			newPathList.set(indexToRandom + i, shuffledPart.get(i));
+		for (int j = 0; j < 25; j++) {
+			int indexToRandom = random.nextInt(newPathList.size() - size);
+			List<Vertex> shuffledPart = newPathList.subList(indexToRandom, indexToRandom + size);
+			Collections.shuffle(shuffledPart);
+			for (int i = 0; i < size; i++) {
+				newPathList.set(indexToRandom + i, shuffledPart.get(i));
+			}
 		}
 
 		return new Path(newPathList);
