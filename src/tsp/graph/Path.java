@@ -97,16 +97,16 @@ public class Path {
 	 */
 	public void reverseVertices(Vertex reverseFrom, Vertex reverseTo) {
 		Vertex before = reverseFrom;
-		List<Vertex> swapList = new ArrayList<>();
-		Vertex next = nextHopPath.get(before);
-		while (!next.equals(reverseTo)) {
-			swapList.add(next);
-			next = nextHopPath.get(next);
+		Vertex curr = nextHopPath.get(before);
+		Vertex next;
+		while (!curr.equals(reverseTo)) {
+			next = nextHopPath.get(curr);
+			nextHopPath.put(curr, before);
+			before = curr;
+			curr = next;
 		}
-		nextHopPath.put(reverseFrom, swapList.get(swapList.size() - 1));
-		for (int i = 0; i < swapList.size() - 1; i++) {
-			nextHopPath.put(swapList.get(i + 1), swapList.get(i));
-		}
-		nextHopPath.put(swapList.get(0), reverseTo);
+		nextHopPath.put(nextHopPath.get(reverseFrom), reverseTo);
+		nextHopPath.put(reverseFrom, before);
 	}
+
 }

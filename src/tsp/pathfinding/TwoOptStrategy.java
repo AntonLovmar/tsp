@@ -3,6 +3,7 @@ package tsp.pathfinding;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import tsp.graph.Graph;
 import tsp.graph.Path;
@@ -21,7 +22,7 @@ public class TwoOptStrategy implements OptimizationStrategy {
 		int maxIterations = Math.min(30, graph.getNumberOfVertices() - 1);
 		while (System.currentTimeMillis() < deadline) {
 			boolean gotBetter = false;
-			for (Vertex root : graph.getVertices()) {
+			search: for (Vertex root : graph.getVertices()) {
 				List<Vertex> neighbourList = graph.getNeighbourList(root);
 				int bestSwapDifference = 0;
 				Vertex bestNeighbour = null;
@@ -34,16 +35,18 @@ public class TwoOptStrategy implements OptimizationStrategy {
 					if (distanceDifference < bestSwapDifference) {
 						bestSwapDifference = distanceDifference;
 						bestNeighbour = neighbour;
-						gotBetter = true;
 					}
 				}
-				if (bestSwapDifference < 0)
+				if (bestSwapDifference < 0) {
 					path.reverseVertices(root, path.next(bestNeighbour));
+					gotBetter = true;
+					continue search;
+				}
 			}
+			if (System.currentTimeMillis() + 50 > deadline)
+				return bestPath;
 			if (!gotBetter) {
-				List<Vertex> randomizedVertices = new ArrayList<>(graph.getVertices());
-				Collections.shuffle(randomizedVertices);
-				path = new Path(randomizedVertices);
+				path = randomizePartOfPath(path, 10);
 			} else {
 				int currLength = graph.totalLength(path);
 				if (currLength < bestLength) {
@@ -53,6 +56,36 @@ public class TwoOptStrategy implements OptimizationStrategy {
 			}
 		}
 		return bestPath;
+	}
+
+	/**
+	 * Returns a new Path with a random part of it shuffled. The length of the
+	 * shuffled part is decided by the part parameter.
+	 * 
+	 * @param path
+	 * @param part
+	 *            How much of the path is shuffled.
+	 * @return
+	 */
+	private Path randomizePartOfPath(Path path, int part) {
+		List<Vertex> pathList = path.getPath();
+		int size = pathList.size() / part;
+		int indexToRandom = new Random().nextInt(pathList.size() - size);
+		List<Vertex> shuffledPart = new ArrayList<>(pathList.subList(indexToRandom, indexToRandom + size));
+		Collections.shuffle(shuffledPart);
+
+		List<Vertex> newList = new ArrayList<>(pathList.size());
+		for (int i = 0; i < indexToRandom; i++) {
+			newList.add(pathList.get(i));
+		}
+		for (int i = 0; i < size; i++) {
+			newList.add(shuffledPart.get(i));
+		}
+		for (int i = indexToRandom + size; i < pathList.size(); i++) {
+			newList.add(pathList.get(i));
+		}
+
+		return new Path(newList);
 	}
 
 	/**

@@ -52,5 +52,4 @@ public class GraphReader {
 		}
 		return new Graph(vertices);
 	}
-
 }
