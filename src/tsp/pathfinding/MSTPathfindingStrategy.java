@@ -18,19 +18,22 @@ public class MSTPathfindingStrategy implements PathfindingStrategy {
 	@Override
 	public Path findPath(Graph graph) {
 		Map<Vertex, Set<Edge>> tree = findMST(graph);
-		int bestLength = Integer.MAX_VALUE;
-		List<Vertex> bestPath = null;
+		return new Path(buildHamiltonCycle(tree, graph, new HashSet<Vertex>(), graph.getVertex(0)));
 
-		for (int i = 0; i < graph.getNumberOfVertices(); i++) {
-			List<Vertex> ham = buildHamiltonCycle(tree, graph, new HashSet<Vertex>(), graph.getVertex(i));
-			int length = graph.totalLength(new Path(ham));
-			// System.out.println("length: " + length);
-			if (length < bestLength) {
-				bestPath = ham;
-				bestLength = length;
-			}
-		}
-		return new Path(bestPath);
+		// int bestLength = Integer.MAX_VALUE;
+		// List<Vertex> bestPath = null;
+		//
+		// for (int i = 0; i < graph.getNumberOfVertices(); i++) {
+		// List<Vertex> ham = buildHamiltonCycle(tree, graph, new
+		// HashSet<Vertex>(), graph.getVertex(i));
+		// int length = graph.totalLength(new Path(ham));
+		// // System.out.println("length: " + length);
+		// if (length < bestLength) {
+		// bestPath = ham;
+		// bestLength = length;
+		// }
+		// }
+		// return new Path(bestPath);
 	}
 
 	private List<Vertex> buildHamiltonCycle(Map<Vertex, Set<Edge>> spanningTree, Graph graph, Set<Vertex> visited,
@@ -49,7 +52,7 @@ public class MSTPathfindingStrategy implements PathfindingStrategy {
 	}
 
 	public Map<Vertex, Set<Edge>> findMST(Graph graph) {
-		long before = System.currentTimeMillis();
+		// long before = System.currentTimeMillis();
 		Map<Vertex, Set<Edge>> verticesToEdges = new HashMap<Vertex, Set<Edge>>(graph.getNumberOfVertices());
 		TreeSet<Edge> edges = new TreeSet<Edge>();
 		for (int i = 0; i < graph.getNumberOfVertices(); i++) {
@@ -59,16 +62,16 @@ public class MSTPathfindingStrategy implements PathfindingStrategy {
 							graph.getVertex(i), graph.getVertex(j))));
 			}
 		}
-
 		List<Set<Vertex>> vSets = new ArrayList<Set<Vertex>>();
 		for (int i = 0; i < graph.getNumberOfVertices(); i++) {
 			Set<Vertex> vertexSet = new HashSet<Vertex>();
 			vertexSet.add(graph.getVertex(i));
 			vSets.add(vertexSet);
 		}
+		// System.out.println("Build time: " + (System.currentTimeMillis() -
+		// before));
 		Set<Edge> spanningTreeEdges = new HashSet<Edge>();
-		long mergeTime = 0;
-		long beforeAlg = System.currentTimeMillis();
+		// long beforeAlg = System.currentTimeMillis();
 		while (!edges.isEmpty()) {
 			Edge e = edges.pollFirst();
 			int u = e.getVertex1().getId();
@@ -78,28 +81,22 @@ public class MSTPathfindingStrategy implements PathfindingStrategy {
 			} else {
 				spanningTreeEdges.add(e);
 				addEdgeToMap(verticesToEdges, e);
-				long beforeMerge = System.currentTimeMillis();
 				mergeSets(vSets.get(v), vSets.get(u), vSets);
-				mergeTime += (System.currentTimeMillis() - beforeMerge);
+
 				if (spanningTreeEdges.size() == graph.getNumberOfVertices() - 1)
 					break;
 
 			}
 		}
-		System.out.println("Algorithm time: " + (System.currentTimeMillis() - beforeAlg));
-		System.out.println("Time in merge: " + mergeTime);
-		System.out.println("Total time: " + (System.currentTimeMillis() - before));
+		// System.out.println("Algorithm time: " + (System.currentTimeMillis() -
+		// beforeAlg));
 		return verticesToEdges;
 	}
 
 	private void mergeSets(Set<Vertex> set1, Set<Vertex> set2, List<Set<Vertex>> allSets) {
-		set1.addAll(set2);
-		for (Vertex v : set1) {
-			allSets.get(v.getId()).addAll(set2);
-		}
 		set2.addAll(set1);
 		for (Vertex v : set1) {
-			allSets.get(v.getId()).addAll(set1);
+			allSets.set(v.getId(), set2);
 		}
 	}
 
