@@ -45,7 +45,7 @@ public class TwoOptStrategy implements OptimizationStrategy {
 			if (System.currentTimeMillis() + 50 > deadline)
 				return bestPath;
 			if (!gotBetter) {
-				path = randomizePartOfPath(path, 17);
+				path = randomizePartOfPath(path, 10);
 			} else {
 				int currLength = graph.totalLength(path);
 				if (currLength < bestLength) {
