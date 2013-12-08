@@ -2,7 +2,9 @@ package tsp;
 
 import tsp.graph.Graph;
 import tsp.graph.Path;
+import tsp.pathfinding.BestNNPathfindingStrategy;
 import tsp.pathfinding.MSTPathfindingStrategy;
+import tsp.pathfinding.NoOpStrategy;
 import tsp.pathfinding.OptimizationStrategy;
 import tsp.pathfinding.PathfindingStrategy;
 import tsp.pathfinding.TwoOptStrategy;
@@ -15,9 +17,16 @@ public class Solver {
 		Solver solver = new Solver();
 		GraphReader reader = new GraphReader();
 		Graph graph = reader.readGraph();
-		Path path = solver.solveWithStrategy(new MSTPathfindingStrategy(), new TwoOptStrategy(), graph, deadline);
+		PathfindingStrategy pathFinder = new BestNNPathfindingStrategy();
+		OptimizationStrategy optimizer = new TwoOptStrategy();
+		if (graph.getNumberOfVertices() < 200)
+			pathFinder = new MSTPathfindingStrategy();
+		if (graph.getNumberOfVertices() < 3) {
+			optimizer = new NoOpStrategy();
+			pathFinder = new NoOpStrategy();
+		}
+		Path path = solver.solveWithStrategy(pathFinder, optimizer, graph, deadline);
 		System.out.println(path);
-		// System.out.println(graph.totalLength(path));
 	}
 
 	public Path solveWithStrategy(PathfindingStrategy pathFinder, OptimizationStrategy optimizer, Graph graph,
